@@ -1,0 +1,22 @@
+<%- include('../partials/header') %>
+        <!-- Sign up Form -->
+        <section class="signup-container">
+            <h3>Sign Up!</h3>
+            <form id="signup-form" action="/users/" method="post">
+                <label for="name">First name:</label><br />
+                <input type="text" id="firstName" name="firstName" required placeholder="First name" /><br /><br />
+
+                <label for="name">Last name:</label><br />
+                <input type="text" id="lastName" name="lastName" required placeholder="Last name" /><br /><br />
+
+                <label for="email">Email:</label><br />
+                <input type="email" id="email" name="email" required placeholder="Email" /><br /><br />
+
+                <label for="subject">Password:</label><br />
+                <input type="password" id="password" name="password" required minlength="8" placeholder="Password" /><br /><br />
+
+                <button class="btn" type="submit">Sign up!</button>
+            </form>
+        </section>
+    </main>
+<%- include('../partials/footer.ejs')%>

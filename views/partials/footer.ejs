@@ -1,0 +1,28 @@
+    <footer>
+        <p>&copy; 2025 VoyagerAI | Smarter Rentals, Smarter Ownership</p>
+        <div class="support-section">
+            <h2 class="support-title">Need Help?</h2> 
+            ||
+            <a href="/docs/support" class="support-link">Customer Support</a> 
+            || 
+            <a href="/docs/faq" class="support-link">FAQ</a> 
+            || 
+            <a href="/docs/policies" class="support-link">Policies</a> 
+            || 
+            <a href="/docs/mission" class="support-link">Mission</a>
+            ||
+        </div>
+    </footer>
+
+    <!-- Icons -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+
+<% const page = typeof currentPage !== 'undefined' ? currentPage : ''; %>
+<% if (page === 'support') { %>
+  <script src="/scripts/support.js"></script>
+<% } else if (page === 'faq') { %>
+  <script src="/scripts/script.js"></script>
+<% } %>
+
+</html>

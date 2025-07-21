@@ -3,18 +3,30 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
+const methodOverride = require('method-override');
 const mongoose = require('mongoose');
-
+const MongoStore = require('connect-mongo');
+const flash = require('connect-flash');
+const userRoutes = require('./routes/userRoutes');
+const rentalRoutes = require('./routes/rentalRoutes');
+const docsRoutes = require('./routes/docsRoutes');
+const { toTitleCase } = require('./utils/stringUtils');
 const session = require('express-session');
-const bcrypt = require('bcrypt');
 
 const app = express();
+
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
+app.locals.toTitleCase = toTitleCase;
+
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+// MongoDB connection URI from environment variable
+const mongUri = process.env.MONGO_URI;
 
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(mongUri);
     console.log('✅ MongoDB connected');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
@@ -24,12 +36,26 @@ const connectDB = async () => {
 
 connectDB();  // <-- Call the connection function here
 
-// Define User schema & model
-const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
-  password: String
+// mount middleware
+app.use(session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({ mongoUrl: mongUri }),        
+        cookie: {maxAge: 60*60*1000}
+    })
+);
+
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.user = req.session.user||null;
+    res.locals.errorMessages = req.flash('error');
+    res.locals.successMessages = req.flash('success');
+    next();
 });
-const User = mongoose.model('User', userSchema);
+
+app.use(methodOverride('_method'));
 
 // Middleware to parse JSON and URL-encoded data
 app.use(express.json());
@@ -38,87 +64,35 @@ app.use(express.urlencoded({ extended: true }));
 // Serve static files from 'public' folder
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Middleware: sessions
-app.use(session({
-  secret: process.env.SESSION_SECRET || 'secret-key', // set the environment variable for safety
-  resave: false,
-  saveUninitialized: false
-}));
 
 
-// Redirects to /login if not authenticated
-function ensureAuthenticated(req, res, next) {
-  // console.log(`#%# in ensureAuthenticated: ${req.session.user}, orig: ${req.originalUrl}`)
-  if (req.session.user) {
-    const nxtendpt = next();
-    // console.log(`#%# authentication succeeded - ${nxtendpt}`)
-    return nxtendpt;
-  }
-  // Save desired URL
-  req.session.redirectTo = req.originalUrl;
-  res.redirect('/login');
-}
+//set up routes
+app.get('/', (req, res) => {
+    res.render('index');
+})
 
-// Show login form
-app.get('/login', (req, res) => {
-  // console.log(`#%# get /login - ${__dirname}`)
-  res.sendFile(path.join(__dirname, 'public', 'login.html'));
-});
+app.use('/users', userRoutes);
 
-app.post('/login', async (req, res) => { // process login
-  const { email, password } = req.body;
-  // console.log(`#%# post /login - ${email},  ${password}`)
-  const user = await User.findOne({ email });
-  if (user && await bcrypt.compare(password, user.password)) {
-    req.session.user = { id: user._id, email: user.email };
-    // Redirect back or to /index.html
-    const dest = req.session.redirectTo || '/index.html';
-    delete req.session.redirectTo;
-    // console.log(`#%# post /login redirect dest:  ${dest}`)
-    return res.redirect(dest);
-  }
+app.use('/rentals', rentalRoutes);
 
-  // login did not succeed - redirect to login page again with error message
-  res.redirect('/login?error=Invalid%20username%20or%20password');
-});
+app.use('/docs', docsRoutes);
 
-app.get('/rentals.html', ensureAuthenticated, (req, res) => {
-  // console.log(`#%# in get /rentals.html`)
-  res.sendFile(path.join(__dirname, 'public', 'rentals-authenticated.html'));
-});
 
-app.get('/home', (req, res) => {
-  // console.log(`#%# get /home - ${__dirname}`)
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
+app.use((req, res, next) => {
+    let err = new Error('The server cannot locate ' + req.url);
+    err.status = 404;
+    next(err);
+})
 
-app.get('/logout', (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      // console.error('Logout error:', err);
-      return res.status(500).send('Could not log out.');
+app.use((err, req, res, next) => {
+    console.log(err.stack);
+    if(!err.status) {
+        err.status = 500;
+        err.message = 'Internal Server Error';
     }
-    // console.log('logged out - session destroyed')
-    res.redirect('/home');
-  });
-});
-
-// POST endpoint to receive contact form submissions
-app.post('/api/contact', async (req, res) => {
-  const { name, email, subject, message } = req.body;
-
-  const discordPayload = {
-    content: `📬 **New Contact Form Submission**\n\n**Name:** ${name}\n**Email:** ${email}\n**Subject:** ${subject}\n**Message:**\n${message}`
-  };
-
-  try {
-    await axios.post(DISCORD_WEBHOOK_URL, discordPayload);
-    res.status(200).json({ success: true, message: 'Message sent to Discord!' });
-  } catch (error) {
-    console.error('Error sending to Discord:', error);
-    res.status(500).json({ success: false, error: 'Failed to send message' });
-  }
-});
+    res.status(err.status);
+    res.render('error', {error: err});
+})
 
 // Start server
 const PORT = process.env.PORT || 3000;

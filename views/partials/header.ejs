@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <% if (typeof currentPage === 'undefined') { %>
+        <title>VoyagerAI – Smart Vehicle Matching</title>
+    <% } else { %>
+        <title>VoyagerAI - <%= toTitleCase(currentPage) %></title>
+    <% } %>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <% if (typeof defaultStyles !== 'undefined' && defaultStyles) { %>
+        <link rel="stylesheet" href="/css/style.css" />
+    <% } %>
+
+    <% if (typeof extraStyles !== 'undefined' && extraStyles) { %>
+        <link rel="stylesheet" href="<%= extraStyles %>" />
+    <% } %>
+    <link rel="stylesheet" href="/css/error.css" />
+</head>
+
+<body>
+    <header class="hero">
+        <nav class="navbar">
+            <h1 class="brand">VoyagerAI</h1>
+            <ul class="nav-links">
+                <li><a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a></li>
+                <li><a href="/rentals/browse" class="<%= currentPage === 'browse' ? 'active' : '' %>">Browse Cars</a></li>
+                <li><a href="/rentals" class="<%= currentPage === 'rentals' ? 'active' : '' %>">My Rentals</a></li>
+                <% if (
+                    currentPage !== 'login' && 
+                    currentPage !== 'signup' && 
+                    currentPage !== 'profile' && 
+                    currentPage !== 'logout' && 
+                    currentPage !== 'home' && 
+                    currentPage !== 'browse' && 
+                    currentPage !== 'rentals'
+                ) { %>
+                    <li><a href="" class="active"><%= toTitleCase(currentPage) %></a></li>
+                <% } %>
+                <%if(!user) {%>
+                    <li><a href="/users/login" class="<%= currentPage === 'login' ? 'active' : '' %>">Login</a></li>
+                    <li><a href="/users/signup" class="<%= currentPage === 'signup' ? 'active' : '' %>">Signup</a></li>
+                <%} else {%>
+                    <li><a href="/users/profile" class="<%= currentPage === 'profile' ? 'active' : '' %>">Profile</a></li>
+                    <li><a href="/users/logout" class="<%= currentPage === 'logout' ? 'active' : '' %>">Logout</a></li>
+                <%} %>
+            </ul>
+        </nav>
+        <div class="hero-content">
+            <% if (currentPage === 'home') { %>
+                <h2>Smarter Car Rentals. Delivered.</h2>
+                <p>Powered by AI to match you with the perfect ride—buy it, rent it, or schedule a test drive from home.</p>
+                <a href="/rentals/browse" class="cta-button">Browse Cars</a>
+            <% } else if (currentPage === 'browse') { %>
+                <h2>Explore Vehicles Near You</h2>
+            <% } else if (currentPage === 'faq') { %>
+                <h2>Frequently Asked Questions</h2>
+            <% } else if (currentPage === 'profile') { %>
+                <h2>Welcome back, <%= user.firstName %> <%=user.lastName%>!</h2>
+            <% } else if (currentPage === 'mission') { %>
+                <h2>Driving the Future, One Smart Match at a Time</h2>
+            <% } else if (currentPage === 'error') { %>
+                <h2>Error Occurred</h2>
+            <% } else if (currentPage === 'policies') { %>
+                <h2>Policies & User Agreements</h2>
+            <% } else if (currentPage === 'rentals') { %>
+                <h2>Your Rentals</h2>
+            <% } else if (currentPage === 'login') { %>
+                <h2>Login to Your Account</h2>
+            <% } else if (currentPage === 'signup') { %>
+                <h2>Create a New Account</h2>
+            <% } else if (currentPage === 'support') { %>
+                <h2>Customer Support</h2>
+                <p>How can we help you today?</p>
+            <% } %>
+        </div>
+    </header>
+<% if (
+    currentPage === 'faq' ||
+    currentPage === 'policies' ||
+    currentPage === 'browse' ||
+    currentPage === 'mission'
+    ) { %>
+    <main class="content-section">
+<% } else { %>
+    <main>
+<% } %>
+      <%if(errorMessages.length >0) {
+          errorMessages.forEach(message => { %>
+              <div class="error"> <%=message%> </div>
+          <%})
+      }%>
+      <%if(successMessages.length >0) {
+          successMessages.forEach(message => { %>
+              <div class="success"> <%=message%> </div>
+          <%})
+      }%>

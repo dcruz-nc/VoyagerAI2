@@ -114,6 +114,16 @@ header.hero.small {
   line-height: 1.4;
 }
 
+.faq-item p {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.faq-item.active p {
+  max-height: 500px; /* or a value big enough to fit the content */
+}
+
 /* Policies section */
 .policy-section {
   margin-bottom: 2rem;

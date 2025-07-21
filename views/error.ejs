@@ -1,0 +1,6 @@
+<%- include('./partials/header', { currentPage: String(error.status), extraStyles: '/css/style.css' }) %>            
+<main>
+    <h3><%= error.status%> Error</h3>
+    <p><%= error.message %></p>
+</main>
+<%- include('./partials/footer') %>
