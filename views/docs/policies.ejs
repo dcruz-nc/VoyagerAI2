@@ -1,38 +1,62 @@
 <%- include('../partials/header') %>            
-<section class="policy-section">
-      <h3>Rental Terms</h3>
-      <ul>
-        <li>Rentals must be returned on time and in original condition.</li>
-        <li>Daily mileage limits apply; overages may incur additional charges.</li>
-        <li>Fuel policy: Return with the same level to avoid refill fees.</li>
-      </ul>
-    </section>
+<h1>Rental Policies – VoyagerAI</h1>
 
-    <section class="policy-section">
-      <h3>Cancellation & Refunds</h3>
-      <ul>
-        <li>Free cancellation up to 24 hours before pickup.</li>
-        <li>Late cancellations (within 24 hours) may be partially refundable.</li>
-        <li>No-shows are non-refundable.</li>
-      </ul>
-    </section>
+<section>
+  <h2>Summary</h2>
+  <ul>
+    <li>Minimum age: 19</li>
+    <li>Full refund if canceled ≥24hrs in advance</li>
+    <li>Optional insurance: Basic ($10), Standard ($20), Premium ($30)</li>
+    <li>Return car with full tank</li>
+  </ul>
+</section>
 
-    <section class="policy-section">
-      <h3>Driver Requirements</h3>
-      <ul>
-        <li>Drivers must be 21+ years old and hold a valid driver’s license.</li>
-        <li>International licenses must be accompanied by a passport.</li>
-        <li>VoyagerAI may request identity verification before pickup.</li>
-      </ul>
-    </section>
+<section>
+  <h2>Age Check</h2>
+  <input type="number" id="age" placeholder="Enter age">
+  <button onclick="checkAge()">Check</button>
+  <p id="ageResult" class="output"></p>
+</section>
 
-    <section class="policy-section">
-      <h3>Data & Privacy</h3>
-      <ul>
-        <li>We never sell your personal information to third parties.</li>
-        <li>All user data is encrypted at rest and in transit.</li>
-        <li>See our full Privacy Policy for details on data usage.</li>
-      </ul>
-    </section>
-  </main>
+<section>
+  <h2>Cancellation Refund</h2>
+  <input type="number" id="cancelHours" placeholder="Hours before pickup">
+  <button onclick="checkRefund()">Calculate</button>
+  <p id="refundResult" class="output"></p>
+</section>
+
+<section>
+  <h2>Insurance Selection</h2>
+  <label><input type="radio" name="insurance" value="basic"> Basic – $10/day</label><br>
+  <label><input type="radio" name="insurance" value="standard"> Standard – $20/day</label><br>
+  <label><input type="radio" name="insurance" value="premium"> Premium – $30/day</label><br>
+  <label><input type="radio" name="insurance" value="none"> No Insurance</label><br>
+  <button onclick="checkInsurance()">Check</button>
+  <p id="insuranceResult" class="output"></p>
+</section>
+
+<section>
+  <h2>Fuel Status</h2>
+  <select id="fuelStatus">
+    <option value="">-- Select --</option>
+    <option value="full">Full tank</option>
+    <option value="low">Partial tank</option>
+  </select>
+  <button onclick="checkFuel()">Check</button>
+  <p id="fuelResult" class="output"></p>
+</section>
+
+<section>
+  <h2>Late Return Fee</h2>
+  <input type="number" id="lateHours" placeholder="Hours late">
+  <button onclick="calculateLateFee()">Calculate</button>
+  <p id="lateResult" class="output"></p>
+</section>
+
+<section>
+  <h2>Submit</h2>
+  <button onclick="submitPolicy()">Submit Policies</button>
+  <p id="submitMsg" class="output"></p>
+</section>
+</main>
 <%- include('../partials/footer.ejs') %>

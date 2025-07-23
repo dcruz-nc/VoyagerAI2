@@ -1,4 +1,5 @@
 const axios = require('axios');
+const e = require('connect-flash');
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 
 exports.support = (req, res)=>{
@@ -35,6 +36,7 @@ exports.faq = (req, res) => {
 exports.policies = (req, res) => {
   res.render('./docs/policies', {
     currentPage: 'policies',
+    extraStyles: '/css/policies.css',
     defaultStyles: true
   });
 }

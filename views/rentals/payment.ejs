@@ -1,0 +1,40 @@
+<%- include('../partials/header') %>
+  <div class="payment-page">
+    <h2>Car Rental Payment</h2>
+
+    <label>Car</label>
+    <select id="car" onchange="showPrice()">
+      <option value="">-- Select --</option>
+      <option value="Tesla">Tesla - $79</option>
+      <option value="Civic">Honda Civic - $45</option>
+      <option value="Jeep">Jeep - $72</option>
+      <option value="RAV4">RAV4 - $52</option>
+      <option value="Mustang">Mustang - $89</option>
+    </select>
+
+    <label>Card Type</label>
+    <select id="cardType">
+      <option value="">-- Select --</option>
+      <option>Visa</option>
+      <option>MasterCard</option>
+      <option>AmEx</option>
+    </select>
+
+    <label>Card Number</label>
+    <input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" />
+
+    <label>Expiration Date</label>
+    <input type="month" id="exp" />
+
+    <label>CVC</label>
+    <input type="text" id="cvc" placeholder="123" maxlength="4" />
+
+    <label>Amount</label>
+    <input type="number" id="amount" placeholder="Enter payment amount" />
+
+    <button onclick="pay()">Pay Now</button>
+
+    <p id="price"></p>
+    <p id="result"></p>
+  </div>
+<%- include('../partials/footer.ejs')%>

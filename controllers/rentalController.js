@@ -12,3 +12,11 @@ exports.rentals = (req, res)=>{
         defaultStyles: true
     });
 }
+
+exports.payment = (req, res)=>{
+    res.render('./rentals/payment', {
+        currentPage: 'payment',
+        extraStyles: '/css/rentals.css',
+        defaultStyles: true
+    });
+};
