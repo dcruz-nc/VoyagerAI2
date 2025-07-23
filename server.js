@@ -19,7 +19,6 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.locals.toTitleCase = toTitleCase;
 
-const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
 // MongoDB connection URI from environment variable
 const mongUri = process.env.MONGO_URI;
 
@@ -93,6 +92,49 @@ app.use((err, req, res, next) => {
     res.status(err.status);
     res.render('error', {error: err});
 })
+
+const carData = [
+  {
+    name: 'Tesla Model 3',
+    type: 'Electric',
+    seats: 5,
+    mpg: '130 MPGe',
+    price: '$79/day',
+    summary: 'Electric • 2023 • Autopilot — high-tech and eco-friendly for a smooth modern ride.'
+  },
+  {
+    name: 'Toyota RAV4',
+    type: 'Hybrid',
+    seats: 5,
+    mpg: 40,
+    price: '$52/day',
+    summary: 'Hybrid — practical and fuel-efficient with versatile utility.'
+  },
+  {
+    name: 'Ford Mustang',
+    type: 'Sport',
+    seats: 4,
+    mpg: 25,
+    price: '$89/day',
+    summary: 'Sport • Iconic performance and bold style — made for fun driving.'
+  },
+  {
+    name: 'Honda Civic Sport',
+    type: 'Gas',
+    seats: 5,
+    mpg: 32,
+    price: '$45/day',
+    summary: '2021 • Bluetooth • Rear Cam — compact, tech-equipped, and reliable.'
+  },
+  {
+    name: 'Jeep Wrangler',
+    type: '4x4',
+    seats: 5,
+    mpg: 20,
+    price: '$72/day',
+    summary: '2022 • Off-Road Ready — rugged and built for adventure.'
+  }
+];
 
 // Start server
 const PORT = process.env.PORT || 3000;

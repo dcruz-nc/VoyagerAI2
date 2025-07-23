@@ -23,4 +23,7 @@ router.get('/policies', controller.policies);
 // GET /docs/mission: render mission page
 router.get('/mission', controller.mission);
 
+// POST /api/chat: handle chat messages to OpenAI
+router.post('/api/chat', controller.chat);
+
 module.exports = router;
