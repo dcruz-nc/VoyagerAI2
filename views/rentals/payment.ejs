@@ -12,6 +12,12 @@
       <option value="Mustang">Mustang - $89</option>
     </select>
 
+    <label>Rental Start Date</label>
+    <input type="date" id="startDate" />
+
+    <label>Rental End Date</label>
+    <input type="date" id="endDate" />
+
     <label>Card Type</label>
     <select id="cardType">
       <option value="">-- Select --</option>
@@ -29,12 +35,13 @@
     <label>CVC</label>
     <input type="text" id="cvc" placeholder="123" maxlength="4" />
 
-    <label>Amount</label>
-    <input type="number" id="amount" placeholder="Enter payment amount" />
-
     <button onclick="pay()">Pay Now</button>
 
     <p id="price"></p>
     <p id="result"></p>
   </div>
-<%- include('../partials/footer.ejs')%>
+
+  <!-- Load payment.js -->
+  <script src="/js/payment.js"></script>
+
+<%- include('../partials/footer.ejs') %>
