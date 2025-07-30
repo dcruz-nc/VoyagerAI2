@@ -81,16 +81,7 @@
             <% } %>
         </div>
     </header>
-<% if (
-    currentPage === 'faq' ||
-    currentPage === 'policies' ||
-    currentPage === 'browse' ||
-    currentPage === 'mission'
-    ) { %>
-    <main class="content-section">
-<% } else { %>
-    <main>
-<% } %>
+<main>
       <%if(errorMessages.length >0) {
           errorMessages.forEach(message => { %>
               <div class="error"> <%=message%> </div>
