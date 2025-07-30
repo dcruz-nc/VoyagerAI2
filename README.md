@@ -91,3 +91,12 @@ VoyagerAI/
 Press `Ctrl + C` in the terminal where it’s running.
 
 ---
+
+
+### ✅ Testing: Start the automated Tests
+
+Start the Tests with:
+
+```bash
+npm test
+```
