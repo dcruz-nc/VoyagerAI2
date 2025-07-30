@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const PORT = process.env.PORT || 3000;
 const express = require('express');
 const path = require('path');
 const axios = require('axios');
@@ -136,8 +137,13 @@ const carData = [
   }
 ];
 
-// Start server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`✅ Server running at http://localhost:${PORT}`);
-});
+
+// ✅ Start server only if run directly (not during testing)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`✅ Server running at http://localhost:${PORT}`);
+  });
+}
+
+// ✅ Export app for testing
+module.exports = app;
