@@ -1,39 +1,121 @@
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('Payment script loaded');
-    const prices = { Tesla: 79, Civic: 45, Jeep: 72, RAV4: 52, Mustang: 89 };
-    let total = 0;
+  console.log('Payment script loaded');
 
-    window.showPrice = function() {
-      const car = document.getElementById("car").value;
-      total = prices[car] || 0;
-      document.getElementById("price").textContent = car ? `Total Price: $${total}` : '';
-      document.getElementById("result").textContent = '';
-    }
+  const prices = { Tesla: 79, Civic: 45, Jeep: 72, RAV4: 52, Mustang: 89 };
+  let total = 0;
 
-    window.pay = function() {
-      const amount = parseFloat(document.getElementById("amount").value);
-      const card = document.getElementById("cardType").value;
-      const num = document.getElementById("cardNum").value.trim();
-      const exp = document.getElementById("exp").value;
-      const cvc = document.getElementById("cvc").value.trim();
-      const result = document.getElementById("result");
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+  const priceDisplay = document.getElementById('price');
+  const resultDisplay = document.getElementById('result');
 
-      if (!total || !card || !amount || !num || !exp || !cvc) {
-        result.textContent = "❗ Please fill out all fields.";
-        result.style.color = "red";
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  const todayStr = `${yyyy}-${mm}-${dd}`;
+
+  if (startDateInput && endDateInput) {
+    startDateInput.min = todayStr;
+    endDateInput.min = todayStr;
+
+    startDateInput.addEventListener('change', () => {
+      if (startDateInput.value) {
+        endDateInput.min = startDateInput.value;
+        if (endDateInput.value && endDateInput.value < startDateInput.value) {
+          endDateInput.value = startDateInput.value;
+        }
+      } else {
+        endDateInput.min = todayStr;
+      }
+      updatePrice();
+    });
+
+    endDateInput.addEventListener('change', () => {
+      updatePrice();
+    });
+  }
+
+  const cardNumInput = document.getElementById('cardNum');
+
+if (cardNumInput) {
+  cardNumInput.addEventListener('input', (e) => {
+    let value = e.target.value;
+    // Remove all non-digit characters (including spaces)
+    value = value.replace(/\D/g, '');
+
+    // Insert space every 4 digits
+    const formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
+
+    e.target.value = formattedValue;
+  });
+}
+
+
+  // When car selection changes, update price
+  const carSelect = document.getElementById('car');
+  if (carSelect) {
+    carSelect.addEventListener('change', () => {
+      updatePrice();
+    });
+  }
+
+  // Calculate number of days (inclusive)
+  function getDaysCount(start, end) {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+    // Calculate difference in milliseconds
+    const diffTime = endDate - startDate;
+    if (diffTime < 0) return 0;
+    // Convert ms to days and add 1 to be inclusive
+    return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+  }
+
+  function updatePrice() {
+    const car = carSelect.value;
+    const dailyPrice = prices[car] || 0;
+    const start = startDateInput.value;
+    const end = endDateInput.value;
+
+    if (car && start && end) {
+      const days = getDaysCount(start, end);
+      if (days > 0) {
+        total = dailyPrice * days;
+        priceDisplay.textContent = `Total Price: $${total} (${days} day${days > 1 ? 's' : ''} at $${dailyPrice}/day)`;
+        resultDisplay.textContent = '';
         return;
       }
-
-      if (amount === total) {
-        result.textContent = `✅ Payment successful with ${card}. Thank you!`;
-        result.style.color = "green";
-      } else if (amount > total) {
-        const change = (amount - total).toFixed(2);
-        result.textContent = `✅ Payment successful! Your change is $${change}.`;
-        result.style.color = "green";
-      } else {
-        result.textContent = `❌ Payment failed. You need to pay at least $${total}.`;
-        result.style.color = "red";
-      }
     }
+    total = 0;
+    priceDisplay.textContent = '';
+  }
+
+  window.showPrice = updatePrice;
+
+  window.pay = function() {
+  const card = document.getElementById("cardType").value;
+  const num = document.getElementById("cardNum").value.trim();
+  const exp = document.getElementById("exp").value;
+  const cvc = document.getElementById("cvc").value.trim();
+  const result = document.getElementById("result");
+
+  const startDate = startDateInput ? startDateInput.value : null;
+  const endDate = endDateInput ? endDateInput.value : null;
+
+  if (!total || !card || !num || !exp || !cvc || !startDate || !endDate) {
+    result.textContent = "❗ Please fill out all fields including rental dates.";
+    result.style.color = "red";
+    return;
+  }
+
+  if (startDate > endDate) {
+    result.textContent = "❗ Rental end date must be the same or after start date.";
+    result.style.color = "red";
+    return;
+  }
+
+  // Charge exactly the total price calculated
+  result.textContent = `✅ Payment successful with ${card}. Charged $${total}. Thank you!`;
+  result.style.color = "green";
+}
 });
