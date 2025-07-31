@@ -1,4 +1,4 @@
-// data/vehicleData.js
+// seed/vehicleData.js
 module.exports = [
   {
     vin: '5YJ3E1EA7KF317XXX',

@@ -12,7 +12,8 @@ const userRoutes = require('./routes/userRoutes');
 const rentalRoutes = require('./routes/rentalRoutes');
 const docsRoutes = require('./routes/docsRoutes');
 const Vehicle = require('./models/vehicle');
-const vehicleData = require('./data/vehicleData');
+const vehicleData = require('./seed/vehicleData');
+const { syncVehicles } = require('./services/vehicleService');
 const { toTitleCase } = require('./utils/stringUtils');
 const session = require('express-session');
 
@@ -28,11 +29,11 @@ const mongUri = process.env.MONGO_URI;
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongUri);
-    console.log('✅ MongoDB connected');
-
-    await syncVehicles();
-
+    await mongoose.connect(mongUri).then(async () => {
+      console.log('✅ MongoDB connected');
+      await syncVehicles(vehicleData);
+      app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
+    });
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -40,19 +41,6 @@ const connectDB = async () => {
 };
 
 connectDB();  // <-- Call the connection function here
-
-async function syncVehicles() {
-  for (const vehicle of vehicleData) {
-    await Vehicle.findOneAndUpdate(
-      { vin: vehicle.vin },
-      vehicle,
-      { upsert: true, new: true, setDefaultsOnInsert: true }
-    );
-  }
-  const vins = vehicleData.map(v => v.vin);
-  await Vehicle.deleteMany({ vin: { $nin: vins } });
-}
-
 
 // mount middleware
 app.use(session({
