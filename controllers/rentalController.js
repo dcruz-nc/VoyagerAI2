@@ -1,3 +1,5 @@
+const model = require('../models/vehicle');
+
 exports.browse = (req, res)=>{
     res.render('./rentals/browse', {
         currentPage: 'browse',
