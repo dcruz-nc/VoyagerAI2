@@ -11,6 +11,8 @@ const flash = require('connect-flash');
 const userRoutes = require('./routes/userRoutes');
 const rentalRoutes = require('./routes/rentalRoutes');
 const docsRoutes = require('./routes/docsRoutes');
+const Vehicle = require('./models/vehicle');
+const vehicleData = require('./data/vehicleData');
 const { toTitleCase } = require('./utils/stringUtils');
 const session = require('express-session');
 
@@ -28,6 +30,9 @@ const connectDB = async () => {
   try {
     await mongoose.connect(mongUri);
     console.log('✅ MongoDB connected');
+
+    await syncVehicles();
+
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -35,6 +40,19 @@ const connectDB = async () => {
 };
 
 connectDB();  // <-- Call the connection function here
+
+async function syncVehicles() {
+  for (const vehicle of vehicleData) {
+    await Vehicle.findOneAndUpdate(
+      { vin: vehicle.vin },
+      vehicle,
+      { upsert: true, new: true, setDefaultsOnInsert: true }
+    );
+  }
+  const vins = vehicleData.map(v => v.vin);
+  await Vehicle.deleteMany({ vin: { $nin: vins } });
+}
+
 
 // mount middleware
 app.use(session({
@@ -93,49 +111,6 @@ app.use((err, req, res, next) => {
     res.status(err.status);
     res.render('error', {error: err});
 })
-
-const carData = [
-  {
-    name: 'Tesla Model 3',
-    type: 'Electric',
-    seats: 5,
-    mpg: '130 MPGe',
-    price: '$79/day',
-    summary: 'Electric • 2023 • Autopilot — high-tech and eco-friendly for a smooth modern ride.'
-  },
-  {
-    name: 'Toyota RAV4',
-    type: 'Hybrid',
-    seats: 5,
-    mpg: 40,
-    price: '$52/day',
-    summary: 'Hybrid — practical and fuel-efficient with versatile utility.'
-  },
-  {
-    name: 'Ford Mustang',
-    type: 'Sport',
-    seats: 4,
-    mpg: 25,
-    price: '$89/day',
-    summary: 'Sport • Iconic performance and bold style — made for fun driving.'
-  },
-  {
-    name: 'Honda Civic Sport',
-    type: 'Gas',
-    seats: 5,
-    mpg: 32,
-    price: '$45/day',
-    summary: '2021 • Bluetooth • Rear Cam — compact, tech-equipped, and reliable.'
-  },
-  {
-    name: 'Jeep Wrangler',
-    type: '4x4',
-    seats: 5,
-    mpg: 20,
-    price: '$72/day',
-    summary: '2022 • Off-Road Ready — rugged and built for adventure.'
-  }
-];
 
 
 // ✅ Start server only if run directly (not during testing)
