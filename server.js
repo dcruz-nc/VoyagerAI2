@@ -11,8 +11,9 @@ const flash = require('connect-flash');
 const userRoutes = require('./routes/userRoutes');
 const rentalRoutes = require('./routes/rentalRoutes');
 const docsRoutes = require('./routes/docsRoutes');
-const Vehicle = require('./models/vehicle');
+const vehicleRoutes = require('./routes/vehicleRoutes');
 const vehicleData = require('./seed/vehicleData');
+const Vehicle = require('./models/Vehicle');
 const { syncVehicles } = require('./services/vehicleService');
 const { toTitleCase } = require('./utils/stringUtils');
 const session = require('express-session');
@@ -29,16 +30,15 @@ const mongUri = process.env.MONGO_URI;
 // Connect to MongoDB
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongUri).then(async () => {
-      console.log('✅ MongoDB connected');
-      await syncVehicles(vehicleData);
-      app.listen(PORT, () => console.log(`✅ Server running at http://localhost:${PORT}`));
-    });
+    await mongoose.connect(mongUri);
+    console.log('✅ MongoDB connected');
+    await syncVehicles(vehicleData);
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
   }
 };
+
 
 connectDB();  // <-- Call the connection function here
 
@@ -73,15 +73,23 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //set up routes
-app.get('/', (req, res) => {
-    res.render('index');
+app.get('/', async (req, res, next) => {
+  try {
+    const featuredVehicles = await Vehicle.find({ isFeatured: true });
+    res.render('index', { featuredVehicles });
+  } catch (err) {
+    next(err);
+  }
 })
+
 
 app.use('/users', userRoutes);
 
 app.use('/rentals', rentalRoutes);
 
 app.use('/docs', docsRoutes);
+
+app.use('/vehicles', vehicleRoutes);
 
 
 app.use((req, res, next) => {
@@ -103,8 +111,10 @@ app.use((err, req, res, next) => {
 
 // ✅ Start server only if run directly (not during testing)
 if (require.main === module) {
-  app.listen(PORT, () => {
-    console.log(`✅ Server running at http://localhost:${PORT}`);
+  connectDB().then(() => {
+    app.listen(PORT, () => {
+      console.log(`✅ Server running at http://localhost:${PORT}`);
+    });
   });
 }
 

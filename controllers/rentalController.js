@@ -1,11 +1,28 @@
-const model = require('../models/vehicle');
+const Vehicle = require('../models/Vehicle');
 
-exports.browse = (req, res)=>{
-    res.render('./rentals/browse', {
+// GET /rentals/browse - Show only available vehicles
+exports.browse = async (req, res, next) => {
+  try {
+    const availableVehicles = await Vehicle.find({ available: true });
+    const vehiclesWithEncodedNames = availableVehicles.map(vehicle => {
+        const displayName = `${vehicle.make} ${vehicle.model}`;
+        return {
+            ...vehicle._doc, // flatten Mongoose doc
+            displayName,
+            encodedName: encodeURIComponent(displayName)
+        };
+    });
+
+    res.render('rentals/browse', { 
+        availableVehicles: vehiclesWithEncodedNames,
         currentPage: 'browse',
         defaultStyles: true
-    });
+     });
+  } catch (error) {
+    next(error);
+  }
 };
+
 
 exports.rentals = (req, res)=>{
     res.render('./rentals/rentals', {
@@ -22,3 +39,5 @@ exports.payment = (req, res)=>{
         defaultStyles: true
     });
 };
+
+

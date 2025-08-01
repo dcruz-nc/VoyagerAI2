@@ -1,7 +1,7 @@
 // list-vehicles.js
 require('dotenv').config();
 const mongoose = require('mongoose');
-const Vehicle = require('./models/vehicle');
+const Vehicle = require('../../models/vehicle');
 
 async function listVehicles() {
   await mongoose.connect(process.env.MONGO_URI);

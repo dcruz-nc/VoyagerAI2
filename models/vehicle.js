@@ -17,4 +17,4 @@ const vehicleSchema = new Schema({
   createdAt: { type: Date, default: Date.now }
 }, { versionKey: false });
 
-module.exports = mongoose.model('Vehicle', vehicleSchema);
+module.exports = mongoose.models.Vehicle || mongoose.model('Vehicle', vehicleSchema);

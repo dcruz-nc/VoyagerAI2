@@ -2,21 +2,13 @@
         <section class="featured-cars">
             <h3>Featured Vehicles</h3>
             <div class="card-grid">
-                <div class="car-card">
-                <img src="images/tesla.jpg" alt="Tesla Model 3">
-                <h4>Tesla Model 3</h4>
-                <p>Electric • $79/day</p>
-                </div>
-                <div class="car-card">
-                <img src="images/rav4.jpg" alt="Toyota RAV4">
-                <h4>Toyota RAV4</h4>
-                <p>Hybrid • $52/day</p>
-                </div>
-                <div class="car-card">
-                <img src="images/mustang.jpg" alt="Ford Mustang">
-                <h4>Ford Mustang</h4>
-                <p>Sport • $89/day</p>
-                </div>
+                <% featuredVehicles.forEach(vehicle => { %>
+                    <div class="car-card">
+                        <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>">
+                        <h4><%= vehicle.make %> <%= vehicle.model %></h4>
+                        <p><%= vehicle.type %> • $<%= vehicle.pricePerDay %>/day</p>
+                    </div>
+                <% }) %>
             </div>
         </section>
 
