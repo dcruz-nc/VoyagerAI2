@@ -22,4 +22,7 @@ router.get('/profile', isLoggedIn, controller.profile);
 //POST /users/logout: logout a user
 router.get('/logout', isLoggedIn, controller.logout);
 
+// DELETE /users/profile/delete: delete logged-in user's account
+router.delete('/profile/delete', isLoggedIn, controller.deleteUser);
+
 module.exports = router;
