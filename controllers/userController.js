@@ -91,3 +91,21 @@ exports.logout = (req, res, next)=>{
             res.redirect('/');  
     });
  };
+
+ exports.deleteUser = async (req, res, next) => {
+    try {
+        const userId = req.session.user;
+
+        // Remove the user from the database
+        await model.findByIdAndDelete(userId);
+
+        // Destroy the session
+        req.session.destroy(err => {
+            if (err) return next(err);
+            res.status(200).send('Account deleted');
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+};

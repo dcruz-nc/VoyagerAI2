@@ -1,4 +1,42 @@
-<%- include('../partials/header') %>  
-        <h3>Coming Soon!</h3>
-    </main>
+<%- include('../partials/header') %>
+
+<section class="profile-container">
+  <h3>Your Profile</h3>
+
+  <div class="profile-details">
+    <div class="profile-row">
+      <span class="label">Full Name:</span>
+      <span class="value"><%= user.firstName %> <%= user.lastName %></span>
+    </div>
+
+    <div class="profile-row">
+      <span class="label">Email:</span>
+      <span class="value"><%= user.email %></span>
+    </div>
+  </div>
+</section>
+
+<div class="delete-account-section">
+  <button class="btn btn-danger" id="delete-account-btn">Delete Account</button>
+</div>
+<script>
+  document.getElementById('delete-account-btn').addEventListener('click', function () {
+    if (confirm('Are you sure you want to delete your account?')) {
+      fetch('/users/profile/delete', {
+        method: 'DELETE'
+      })
+      .then(res => {
+        if (res.ok) {
+          window.location.href = '/'; // Or a goodbye page
+        } else {
+          alert('Failed to delete account');
+        }
+      })
+      .catch(() => alert('Something went wrong'));
+    }
+  });
+</script>
+</body>
+
+</main>
 <%- include('../partials/footer.ejs') %>
