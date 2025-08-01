@@ -43,7 +43,7 @@ exports.getUserLogin = (req, res, next) => {
 
 exports.login = (req, res, next)=>{
 
-    let email = req.body.email;
+    let email = req.body.email.toLowerCase();
     let password = req.body.password;
     model.findOne({ email: email })
     .then(user => {
