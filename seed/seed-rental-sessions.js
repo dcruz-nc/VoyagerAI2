@@ -4,7 +4,7 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const RentalSession = require('../models/rentalSession');
 const User = require('../models/user');
-const Vehicle = require('../models/vehicle');
+const Vehicle = require('../models/Vehicle');
 
 // to get a random date between two dates
 function randomDate(start, end) {

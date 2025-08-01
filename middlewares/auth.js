@@ -1,3 +1,6 @@
+
+const User = require('../models/user');
+
 // check if user is a guest
 exports.isGuest = (req, res, next) => {
     if (!req.session.user) {
@@ -9,8 +12,11 @@ exports.isGuest = (req, res, next) => {
 };
 
 // check if user is authenticated
-exports.isLoggedIn = (req, res, next) => {
+exports.isLoggedIn = async (req, res, next) => {
     if (req.session.user) {
+        // Attach the session user to req.user
+        req.user = await User.findById(req.session.user).lean();
+
         return next();
     } else {
         req.flash('error', 'You need to log in first');
