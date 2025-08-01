@@ -2,7 +2,6 @@
 require('dotenv').config();
 
 const mongoose = require('mongoose');
-const { Types: { ObjectId } } = mongoose;
 const RentalSession = require('./models/rentalSession');
 const User = require('./models/user');
 const Vehicle = require('./models/vehicle');
