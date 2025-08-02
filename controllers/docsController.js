@@ -53,25 +53,35 @@ exports.chat = async (req, res) => {
   const { message } = req.body;
 
   const carSummaries = [
-    "Tesla Model 3: Electric • 2023 • Autopilot — high-tech and eco-friendly for a smooth modern ride.",
-    "Toyota RAV4: Hybrid — practical and fuel-efficient with versatile utility.",
-    "Ford Mustang: Sport • Iconic performance and bold style — made for fun driving.",
-    "Honda Civic Sport: 2021 • Bluetooth • Rear Cam — compact, tech-equipped, and reliable.",
-    "Jeep Wrangler: 2022 • Off-Road Ready — rugged and built for adventure."
-  ];
+  "Nissan Sentra: Sedan • 2020 • 33 MPG — affordable and efficient for daily driving.",
+  "Honda Accord: Sedan • 2021 • 31 MPG — comfortable with balanced performance and economy.",
+  "Kia Sorento: SUV • 2022 • 29 MPG — roomy and modern for families or groups.",
+  "Toyota Highlander: SUV • 2023 • 28 MPG — reliable midsize SUV with comfort and space.",
+  "Ford Fusion: Sedan • 2020 • 27 MPG — solid midsize choice for everyday use.",
+  "BMW X3: SUV • 2022 • 25 MPG — luxury SUV with smooth handling and features.",
+  "Ford F-150: Truck • 2022 • 20 MPG — powerful and capable for heavy-duty needs.",
+  "Tesla Model S: Electric • 2023 • 120 MPGe — premium EV with top-tier range and tech.",
+  "Tesla Model 3: Electric • 2023 • Autopilot — high-tech and eco-friendly for a smooth modern ride.",
+  "Toyota RAV4: Hybrid — practical and fuel-efficient with versatile utility.",
+  "Ford Mustang: Sport • Iconic performance and bold style — made for fun driving.",
+  "Honda Civic Sport: 2021 • Bluetooth • Rear Cam — compact, tech-equipped, and reliable.",
+  "Jeep Wrangler: 2022 • Off-Road Ready — rugged and built for adventure."
+];
+
 
   const systemMessage = {
-    role: 'system',
-    content: `
-You are a helpful car rental assistant. You know the following 5 cars available for rent:
+  role: 'system',
+  content: `
+You are a helpful car rental assistant. You know the following cars available for rent:
 
 ${carSummaries.join('\n')}
 
 Ask the user questions about their needs and recommend a car accordingly.
-If they ask for availability, say: "Please contact our team to confirm availability."
+If they ask a question that cannot be answered regarding the cars, say: "Please contact our team using the contact form"
 Do not make up cars not listed above.
-    `.trim()
-  };
+  `.trim()
+};
+
 
     try {
     const response = await axios.post(
