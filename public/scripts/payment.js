@@ -14,26 +14,24 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const bookedRanges = JSON.parse(bookedRangesElement.textContent);
+  const rawBookedRanges = JSON.parse(bookedRangesElement.textContent);
+  const bookedRanges = rawBookedRanges.map(range => ({
+    start: range.start.split('T')[0], // 'YYYY-MM-DD'
+    end: range.end.split('T')[0]
+  }));
+
   const pricePerDay = parseFloat(
     priceTextElement.textContent.replace('$', '').replace('/day', '')
   );
 
-  // Normalize to remove time offset
-  function normalize(date) {
-    const normalized = new Date(date);
-    normalized.setHours(0, 0, 0, 0);
-    return normalized;
-  }
-
-  // Expand date ranges into individual days
   function expandDateRanges(ranges) {
     const disabledDates = [];
     ranges.forEach(range => {
-      let current = normalize(range.start);
-      const end = normalize(range.end);
+      let current = new Date(range.start);
+      const end = new Date(range.end);
       while (current <= end) {
-        disabledDates.push(current.toISOString().split('T')[0]);
+        const dateStr = current.toISOString().split('T')[0];
+        disabledDates.push(dateStr);
         current.setDate(current.getDate() + 1);
       }
     });
@@ -42,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const disabledDates = expandDateRanges(bookedRanges);
 
-  // Flatpickr init
   const startPicker = flatpickr(startDateInput, {
     minDate: 'today',
     disable: disabledDates,
@@ -62,17 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
     onChange: updateTotalPrice
   });
 
-  // Check if a date falls within a booked range
   function isInBookedRange(dateStr) {
-    const date = normalize(dateStr);
-    return bookedRanges.some(range => {
-      const start = normalize(range.start);
-      const end = normalize(range.end);
-      return date >= start && date <= end;
-    });
+    return disabledDates.includes(dateStr);
   }
 
-  // Calculate total price based on valid (non-booked) days
   function updateTotalPrice() {
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
@@ -82,27 +72,26 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    let start = normalize(startDate);
-    const end = normalize(endDate);
+    let current = new Date(startDate);
+    const end = new Date(endDate);
     let dayCount = 0;
 
-    while (start <= end) {
-      const iso = start.toISOString().split('T')[0];
+    while (current <= end) {
+      const iso = current.toISOString().split('T')[0];
       if (!isInBookedRange(iso)) dayCount++;
-      start.setDate(start.getDate() + 1);
+      current.setDate(current.getDate() + 1);
     }
 
     const total = dayCount * pricePerDay;
     priceContainer.textContent = `Total: $${total.toFixed(2)} (${dayCount} day${dayCount !== 1 ? 's' : ''})`;
   }
 
-  // Prevent form submission if selected dates include blocked days
   form.addEventListener('submit', e => {
     const startDate = startDateInput.value;
     const endDate = endDateInput.value;
 
-    let current = normalize(startDate);
-    const end = normalize(endDate);
+    let current = new Date(startDate);
+    const end = new Date(endDate);
 
     while (current <= end) {
       const iso = current.toISOString().split('T')[0];
@@ -114,4 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       current.setDate(current.getDate() + 1);
     }
   });
+
+  console.log('Disabled Dates:', disabledDates);
+  console.log('Booked Ranges:', bookedRanges);
 });
