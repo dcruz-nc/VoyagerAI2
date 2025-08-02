@@ -119,3 +119,21 @@ if (cardNumInput) {
   result.style.color = "green";
 }
 });
+
+
+/*
+function getDaysCount(start, end) {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const diffTime = endDate - startDate;
+  if (diffTime < 0) return 0;
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+}
+
+// Test cases:
+console.assert(getDaysCount('2025-08-01', '2025-08-01') === 1, 'Test 1 Failed');
+console.assert(getDaysCount('2025-08-01', '2025-08-05') === 5, 'Test 2 Failed');
+console.assert(getDaysCount('2025-08-05', '2025-08-01') === 0, 'Test 3 Failed');
+
+console.log('All simple tests passed!');
+*/
