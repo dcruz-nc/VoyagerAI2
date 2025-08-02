@@ -13,4 +13,6 @@ router.get('/browse', controller.browse);
 // GET /rentals/payment: get rentals payment page
 router.get('/payment', isLoggedIn, controller.payment);
 
+router.post('/confirm', isLoggedIn, controller.confirmRental);
+
 module.exports = router;

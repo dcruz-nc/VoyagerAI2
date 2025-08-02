@@ -18,6 +18,10 @@
         <link rel="stylesheet" href="/css/style.css" />
     <% } %>
 
+    <% if (currentPage === 'payment') { %>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <% } %>
+
     <% if (typeof extraStyles !== 'undefined' && extraStyles) { %>
         <link rel="stylesheet" href="<%= extraStyles %>" />
     <% } %>
