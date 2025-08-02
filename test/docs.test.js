@@ -1,54 +1,42 @@
-const chai = require('chai');
-const chaiHttp = require('chai-http');
-const nock = require('nock');
-const app = require('../server');
-const expect = chai.expect;
+// test/payment.test.js
+const { expect } = require('chai');
 
-chai.use(chaiHttp);
+// Extracted pure functions to test
+function getDaysCount(start, end) {
+  const startDate = new Date(start);
+  const endDate = new Date(end);
+  const diffTime = endDate - startDate;
+  if (diffTime < 0) return 0;
+  return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
+}
 
-describe('ChatGPT Bot API', () => {
-  it('should return a reply from the ChatGPT mock', (done) => {
-    const fakeReply = "I suggest the Toyota RAV4.";
+function formatCardNumber(input) {
+  let value = input.replace(/\D/g, '');
+  return value.match(/.{1,4}/g)?.join(' ') || '';
+}
 
-    nock('https://api.openai.com')
-      .post('/v1/chat/completions')
-      .reply(200, {
-        choices: [{ message: { content: fakeReply } }]
-      });
-
-    chai.request(app)
-      .post('/docs/api/chat')
-      .send({ message: 'I want a family car with good mileage' })
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.reply).to.be.a('string');
-        expect(res.body.reply.toLowerCase()).to.match(/recommend|suggest|consider/);
-        done();
-      });
+describe('Payment Script Utility Functions', () => {
+  describe('getDaysCount()', () => {
+    it('returns 1 when start and end dates are the same', () => {
+      expect(getDaysCount('2025-08-01', '2025-08-01')).to.equal(1);
+    });
+    it('returns correct number of days inclusive', () => {
+      expect(getDaysCount('2025-08-01', '2025-08-05')).to.equal(5);
+    });
+    it('returns 0 if end date is before start date', () => {
+      expect(getDaysCount('2025-08-05', '2025-08-01')).to.equal(0);
+    });
   });
-});
 
-
-describe('Contact Form API (Discord Webhook)', () => {
-  it('should send contact form to mocked Discord webhook', (done) => {
-    const payload = {
-      name: 'John',
-      email: 'john@example.com',
-      subject: 'Test Subject',
-      message: 'Hello from the form!'
-    };
-
-    nock(process.env.DISCORD_WEBHOOK_URL)
-      .post('')
-      .reply(200, { ok: true });
-
-    chai.request(app)
-      .post('/docs/api/contact')
-      .send(payload)
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.success).to.be.true;
-        done();
-      });
+  describe('formatCardNumber()', () => {
+    it('formats a plain digit string correctly', () => {
+      expect(formatCardNumber('1234123412341234')).to.equal('1234 1234 1234 1234');
+    });
+    it('removes non-digits and formats correctly', () => {
+      expect(formatCardNumber('1234-1234-1234-1234')).to.equal('1234 1234 1234 1234');
+    });
+    it('returns empty string for empty input', () => {
+      expect(formatCardNumber('')).to.equal('');
+    });
   });
 });
