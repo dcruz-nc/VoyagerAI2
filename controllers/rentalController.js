@@ -1,4 +1,4 @@
-const Vehicle = require('../models/Vehicle');
+const Vehicle = require('../models/vehicle');
 const RentalSession = require('../models/rentalSession');
 
 // GET /rentals/browse - Show only available vehicles
