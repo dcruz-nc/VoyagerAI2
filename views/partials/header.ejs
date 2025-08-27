@@ -56,34 +56,6 @@
                 <%} %>
             </ul>
         </nav>
-        <div class="hero-content">
-            <% if (currentPage === 'home') { %>
-                <h2>Smarter Car Rentals. Delivered.</h2>
-                <p>Powered by AI to match you with the perfect ride—buy it, rent it, or schedule a test drive from home.</p>
-                <a href="/rentals/browse" class="cta-button">Browse Cars</a>
-            <% } else if (currentPage === 'browse') { %>
-                <h2>Explore Vehicles Near You</h2>
-            <% } else if (currentPage === 'faq') { %>
-                <h2>Frequently Asked Questions</h2>
-            <% } else if (currentPage === 'profile') { %>
-                <h2>Welcome, <%= user.firstName %> <%=user.lastName%>!</h2>
-            <% } else if (currentPage === 'mission') { %>
-                <h2>Driving the Future, One Smart Match at a Time</h2>
-            <% } else if (currentPage === 'error') { %>
-                <h2>Error Occurred</h2>
-            <% } else if (currentPage === 'policies') { %>
-                <h2>Policies & User Agreements</h2>
-            <% } else if (currentPage === 'rentals') { %>
-                <h2>Your Rentals</h2>
-            <% } else if (currentPage === 'login') { %>
-                <h2>Login to Your Account</h2>
-            <% } else if (currentPage === 'signup') { %>
-                <h2>Create a New Account</h2>
-            <% } else if (currentPage === 'support') { %>
-                <h2>Customer Support</h2>
-                <p>How can we help you today?</p>
-            <% } %>
-        </div>
     </header>
 <main>
       <%if(errorMessages.length >0) {
