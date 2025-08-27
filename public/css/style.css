@@ -1809,24 +1809,6 @@ footer p {
   margin: 0;
 }
 
-.status-filter {
-  padding: 0.5rem 1rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-family: 'Inter', sans-serif;
-  color: #1a1a1a;
-  background: white;
-  transition: border-color 0.3s ease;
-  cursor: pointer;
-}
-
-.status-filter:focus {
-  outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-}
-
 /* Rentals Grid */
 .rentals-grid {
   padding: 2rem;
