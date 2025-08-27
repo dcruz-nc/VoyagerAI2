@@ -1,42 +1,92 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', { currentPage: 'profile', defaultStyles: true }) %>
 
-<section class="profile-container">
-  <h3>Your Profile</h3>
+<!-- Ensure main styles are loaded for modern header/footer -->
+<link rel="stylesheet" href="/css/style.css" />
 
-  <div class="profile-details">
-    <div class="profile-row">
-      <span class="label">Full Name:</span>
-      <span class="value"><%= user.firstName %> <%= user.lastName %></span>
-    </div>
+        <!-- Profile Header Section -->
+        <section class="profile-header">
+            <div class="profile-header-content">
+                <h1>Your Profile</h1>
+                <p>Manage your account information and preferences</p>
+            </div>
+        </section>
 
-    <div class="profile-row">
-      <span class="label">Email:</span>
-      <span class="value"><%= user.email %></span>
-    </div>
-  </div>
-</section>
+        <!-- Profile Details Section -->
+        <section class="profile-details-section">
+            <div class="profile-container">
+                <div class="profile-card">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    
+                    <div class="profile-info">
+                        <div class="profile-row">
+                            <span class="label">Full Name:</span>
+                            <span class="value"><%= user.firstName %> <%= user.lastName %></span>
+                        </div>
 
-<div class="delete-account-section">
-  <button class="btn btn-danger" id="delete-account-btn">Delete Account</button>
-</div>
-<script>
-  document.getElementById('delete-account-btn').addEventListener('click', function () {
-    if (confirm('Are you sure you want to delete your account?')) {
-      fetch('/users/profile/delete', {
-        method: 'DELETE'
-      })
-      .then(res => {
-        if (res.ok) {
-          window.location.href = '/'; // Or a goodbye page
-        } else {
-          alert('Failed to delete account');
-        }
-      })
-      .catch(() => alert('Something went wrong'));
-    }
-  });
-</script>
-</body>
+                        <div class="profile-row">
+                            <span class="label">Email:</span>
+                            <span class="value"><%= user.email %></span>
+                        </div>
+                        
+                        <div class="profile-row">
+                            <span class="label">Member Since:</span>
+                            <span class="value"><%= new Date(user.createdAt || Date.now()).toLocaleDateString() %></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-</main>
+        <!-- Account Actions Section -->
+        <section class="account-actions-section">
+            <div class="account-actions-container">
+                <div class="action-card">
+                    <h3>Account Actions</h3>
+                    <div class="action-buttons">
+                        <button class="action-btn primary" onclick="editProfile()">
+                            <i class="fas fa-edit"></i>
+                            Edit Profile
+                        </button>
+                        <button class="action-btn secondary" onclick="changePassword()">
+                            <i class="fas fa-key"></i>
+                            Change Password
+                        </button>
+                        <button class="action-btn danger" id="delete-account-btn">
+                            <i class="fas fa-trash"></i>
+                            Delete Account
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            document.getElementById('delete-account-btn').addEventListener('click', function () {
+                if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                    fetch('/users/profile/delete', {
+                        method: 'DELETE'
+                    })
+                    .then(res => {
+                        if (res.ok) {
+                            window.location.href = '/'; // Or a goodbye page
+                        } else {
+                            alert('Failed to delete account');
+                        }
+                    })
+                    .catch(() => alert('Something went wrong'));
+                }
+            });
+
+            function editProfile() {
+                alert('Edit profile functionality coming soon!');
+            }
+
+            function changePassword() {
+                alert('Change password functionality coming soon!');
+            }
+        </script>
+
+        </main>
 <%- include('../partials/footer.ejs') %>
