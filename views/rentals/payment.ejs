@@ -2,46 +2,36 @@
   <div class="payment-page">
     <h2>Car Rental Payment</h2>
 
-    <label>Car</label>
-    <select id="car" onchange="showPrice()">
-      <option value="">-- Select --</option>
-      <option value="Tesla">Tesla - $79</option>
-      <option value="Civic">Honda Civic - $45</option>
-      <option value="Jeep">Jeep - $72</option>
-      <option value="RAV4">RAV4 - $52</option>
-      <option value="Mustang">Mustang - $89</option>
-    </select>
+    <div class="vehicle-summary">
+      <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>">
+      <h3><%= vehicle.make %> <%= vehicle.model %></h3>
+      <p><%= vehicle.type %> • <%= vehicle.year %> • <%= vehicle.seats %> seats • <%= vehicle.mpg %></p>
+      <p><strong>$<%= vehicle.pricePerDay %>/day</strong></p>
+    </div>
 
-    <label>Rental Start Date</label>
-    <input type="date" id="startDate" />
+    <form action="/rentals/confirm" method="POST">
+      <input type="hidden" name="vehicleId" value="<%= vehicle._id %>" />
+      <label>Rental Start Date</label>
+      <input type="text" name="startDate" id="startDate" required>
 
-    <label>Rental End Date</label>
-    <input type="date" id="endDate" />
+      <label>Rental End Date</label>
+      <input type="text" name="endDate" id="endDate" required>
 
-    <label>Card Type</label>
-    <select id="cardType">
-      <option value="">-- Select --</option>
-      <option>Visa</option>
-      <option>MasterCard</option>
-      <option>AmEx</option>
-    </select>
+      <!-- Payment Info Fields -->
+      <label>Card Number</label>
+      <input type="text" name="cardNum" maxlength="19" required />
+      <label>Expiration</label>
+      <input type="month" name="exp" required />
+      <label>CVC</label>
+      <input type="text" name="cvc" maxlength="4" required />
 
-    <label>Card Number</label>
-    <input type="text" id="cardNum" placeholder="1234 5678 9012 3456" maxlength="19" />
+      <p id="totalPrice" style="margin-top: 1rem; font-weight: 600; color: #007BFF;"></p>
 
-    <label>Expiration Date</label>
-    <input type="month" id="exp" />
-
-    <label>CVC</label>
-    <input type="text" id="cvc" placeholder="123" maxlength="4" />
-
-    <button onclick="pay()">Pay Now</button>
-
-    <p id="price"></p>
-    <p id="result"></p>
+      <button type="submit">Pay Now</button>
+    </form>
   </div>
-
-  <!-- Load payment.js -->
-  <script src="/js/payment.js"></script>
-
+</main>
+<script id="bookedRangesJSON" type="application/json">
+  <%- JSON.stringify(bookedRanges) %>
+</script>
 <%- include('../partials/footer.ejs') %>

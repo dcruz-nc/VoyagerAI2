@@ -16,7 +16,6 @@
 
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-</body>
 
 <% const page = typeof currentPage !== 'undefined' ? currentPage : ''; %>
 <% if (page === 'support') { %>
@@ -26,7 +25,9 @@
 <% } else if (page === 'policies') { %>
   <script src="/scripts/policies.js"></script>
 <% } else if (page === 'payment') { %>
-  <script src="/scripts/payment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="/scripts/payment.js"></script>
 <% } %>
+</body>
 
 </html>

@@ -86,3 +86,4 @@ function appendMessage(sender, text) {
   container.appendChild(messageElem);
   container.scrollTop = container.scrollHeight;
 }
+

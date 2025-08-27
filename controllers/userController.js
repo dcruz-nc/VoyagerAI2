@@ -43,7 +43,7 @@ exports.getUserLogin = (req, res, next) => {
 
 exports.login = (req, res, next)=>{
 
-    let email = req.body.email;
+    let email = req.body.email.toLowerCase();
     let password = req.body.password;
     model.findOne({ email: email })
     .then(user => {
@@ -91,3 +91,21 @@ exports.logout = (req, res, next)=>{
             res.redirect('/');  
     });
  };
+
+ exports.deleteUser = async (req, res, next) => {
+    try {
+        const userId = req.session.user;
+
+        // Remove the user from the database
+        await model.findByIdAndDelete(userId);
+
+        // Destroy the session
+        req.session.destroy(err => {
+            if (err) return next(err);
+            res.redirect('/users/login');
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server error');
+    }
+};

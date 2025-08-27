@@ -1,121 +1,109 @@
+// Ensure DOM is loaded before executing
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('Payment script loaded');
+  console.log('💡 payment.js loaded');
 
-  const prices = { Tesla: 79, Civic: 45, Jeep: 72, RAV4: 52, Mustang: 89 };
-  let total = 0;
-
+  const bookedRangesElement = document.getElementById('bookedRangesJSON');
+  const priceTextElement = document.querySelector('.vehicle-summary strong');
   const startDateInput = document.getElementById('startDate');
   const endDateInput = document.getElementById('endDate');
-  const priceDisplay = document.getElementById('price');
-  const resultDisplay = document.getElementById('result');
+  const form = document.querySelector('form');
+  const priceContainer = document.getElementById('totalPrice');
 
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const todayStr = `${yyyy}-${mm}-${dd}`;
+  if (!bookedRangesElement || !priceTextElement || !startDateInput || !endDateInput || !form || !priceContainer) {
+    console.warn('🚫 Missing required DOM elements — payment.js aborted.');
+    return;
+  }
 
-  if (startDateInput && endDateInput) {
-    startDateInput.min = todayStr;
-    endDateInput.min = todayStr;
+  const rawBookedRanges = JSON.parse(bookedRangesElement.textContent);
+  const bookedRanges = rawBookedRanges.map(range => ({
+    start: range.start.split('T')[0], // 'YYYY-MM-DD'
+    end: range.end.split('T')[0]
+  }));
 
-    startDateInput.addEventListener('change', () => {
-      if (startDateInput.value) {
-        endDateInput.min = startDateInput.value;
-        if (endDateInput.value && endDateInput.value < startDateInput.value) {
-          endDateInput.value = startDateInput.value;
-        }
-      } else {
-        endDateInput.min = todayStr;
+  const pricePerDay = parseFloat(
+    priceTextElement.textContent.replace('$', '').replace('/day', '')
+  );
+
+  function expandDateRanges(ranges) {
+    const disabledDates = [];
+    ranges.forEach(range => {
+      let current = new Date(range.start);
+      const end = new Date(range.end);
+      while (current <= end) {
+        const dateStr = current.toISOString().split('T')[0];
+        disabledDates.push(dateStr);
+        current.setDate(current.getDate() + 1);
       }
-      updatePrice();
     });
-
-    endDateInput.addEventListener('change', () => {
-      updatePrice();
-    });
+    return disabledDates;
   }
 
-  const cardNumInput = document.getElementById('cardNum');
+  const disabledDates = expandDateRanges(bookedRanges);
 
-if (cardNumInput) {
-  cardNumInput.addEventListener('input', (e) => {
-    let value = e.target.value;
-    // Remove all non-digit characters (including spaces)
-    value = value.replace(/\D/g, '');
-
-    // Insert space every 4 digits
-    const formattedValue = value.match(/.{1,4}/g)?.join(' ') || '';
-
-    e.target.value = formattedValue;
-  });
-}
-
-
-  // When car selection changes, update price
-  const carSelect = document.getElementById('car');
-  if (carSelect) {
-    carSelect.addEventListener('change', () => {
-      updatePrice();
-    });
-  }
-
-  // Calculate number of days (inclusive)
-  function getDaysCount(start, end) {
-    const startDate = new Date(start);
-    const endDate = new Date(end);
-    // Calculate difference in milliseconds
-    const diffTime = endDate - startDate;
-    if (diffTime < 0) return 0;
-    // Convert ms to days and add 1 to be inclusive
-    return Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
-  }
-
-  function updatePrice() {
-    const car = carSelect.value;
-    const dailyPrice = prices[car] || 0;
-    const start = startDateInput.value;
-    const end = endDateInput.value;
-
-    if (car && start && end) {
-      const days = getDaysCount(start, end);
-      if (days > 0) {
-        total = dailyPrice * days;
-        priceDisplay.textContent = `Total Price: $${total} (${days} day${days > 1 ? 's' : ''} at $${dailyPrice}/day)`;
-        resultDisplay.textContent = '';
-        return;
+  const startPicker = flatpickr(startDateInput, {
+    minDate: 'today',
+    disable: disabledDates,
+    dateFormat: 'Y-m-d',
+    onChange: selectedDates => {
+      if (selectedDates.length) {
+        endPicker.set('minDate', selectedDates[0]);
+        updateTotalPrice();
       }
     }
-    total = 0;
-    priceDisplay.textContent = '';
+  });
+
+  const endPicker = flatpickr(endDateInput, {
+    minDate: 'today',
+    disable: disabledDates,
+    dateFormat: 'Y-m-d',
+    onChange: updateTotalPrice
+  });
+
+  function isInBookedRange(dateStr) {
+    return disabledDates.includes(dateStr);
   }
 
-  window.showPrice = updatePrice;
+  function updateTotalPrice() {
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
 
-  window.pay = function() {
-  const card = document.getElementById("cardType").value;
-  const num = document.getElementById("cardNum").value.trim();
-  const exp = document.getElementById("exp").value;
-  const cvc = document.getElementById("cvc").value.trim();
-  const result = document.getElementById("result");
+    if (!startDate || !endDate) {
+      priceContainer.textContent = '';
+      return;
+    }
 
-  const startDate = startDateInput ? startDateInput.value : null;
-  const endDate = endDateInput ? endDateInput.value : null;
+    let current = new Date(startDate);
+    const end = new Date(endDate);
+    let dayCount = 0;
 
-  if (!total || !card || !num || !exp || !cvc || !startDate || !endDate) {
-    result.textContent = "❗ Please fill out all fields including rental dates.";
-    result.style.color = "red";
-    return;
+    while (current <= end) {
+      const iso = current.toISOString().split('T')[0];
+      if (!isInBookedRange(iso)) dayCount++;
+      current.setDate(current.getDate() + 1);
+    }
+
+    const total = dayCount * pricePerDay;
+    priceContainer.textContent = `Total: $${total.toFixed(2)} (${dayCount} day${dayCount !== 1 ? 's' : ''})`;
   }
 
-  if (startDate > endDate) {
-    result.textContent = "❗ Rental end date must be the same or after start date.";
-    result.style.color = "red";
-    return;
-  }
+  form.addEventListener('submit', e => {
+    const startDate = startDateInput.value;
+    const endDate = endDateInput.value;
 
-  // Charge exactly the total price calculated
-  result.textContent = `✅ Payment successful with ${card}. Charged $${total}. Thank you!`;
-  result.style.color = "green";
-}
+    let current = new Date(startDate);
+    const end = new Date(endDate);
+
+    while (current <= end) {
+      const iso = current.toISOString().split('T')[0];
+      if (isInBookedRange(iso)) {
+        alert('❌ Selected dates include unavailable days. Please adjust your rental period.');
+        e.preventDefault();
+        return;
+      }
+      current.setDate(current.getDate() + 1);
+    }
+  });
+
+  console.log('Disabled Dates:', disabledDates);
+  console.log('Booked Ranges:', bookedRanges);
 });

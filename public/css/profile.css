@@ -1,6 +1,7 @@
 /* Import Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Inter&family=Poppins:wght@500;700&display=swap');
 
+
 /* Base settings */
 body {
     font-family: 'Inter', sans-serif;
@@ -90,19 +91,20 @@ header.hero.small {
 
 /* Main Content */
 main {
-    min-height: calc(100vh - 400px);
-    width: 80%;
-    margin: 20px auto 30px;
-    background-color: #fff;
-    /* White card */
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
+  min-height: calc(100vh - 140px); /* adjust based on header + footer height */
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* important to keep content aligned top */
 }
+
 
 h3 {
     font-size: 3.25rem;
@@ -188,4 +190,52 @@ footer p {
     .hero-content h2 {
         font-size: 2rem;
     }
+}
+.profile-details {
+  width: 100%;
+  max-width: 1000px; /* increased from 600px */
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; /* more space between rows */
+  padding: 1rem; /* optional padding */
+}
+
+.profile-row {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #dee2e6;
+  padding-bottom: 1rem;
+  font-size: 1.25rem; /* make rows larger */
+}
+
+.profile-row .label {
+  font-weight: 600;
+  color: #495057;
+}
+
+.profile-row .value {
+  color: #212529;
+  font-weight: 500;
+}
+
+.delete-account-section {
+  margin-top: 3rem;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-danger {
+  background-color: #0252a7;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
 }
