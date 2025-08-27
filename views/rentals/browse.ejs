@@ -1,25 +1,179 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', { currentPage: 'browse' }) %>
 
-<section class="search-filter">
-  <input type="text" placeholder="Search make, model, or feature..." class="search-input" />
-  <button class="filter-btn">🔍 Search</button>
-</section>
+        <!-- Browse Header Section -->
+        <section class="browse-header">
+            <div class="browse-header-content">
+                <h1>Browse Our Vehicle Fleet</h1>
+                <p>Discover the perfect vehicle for your journey from our extensive collection of cars, SUVs, and luxury vehicles.</p>
+            </div>
+        </section>
 
-<section class="car-grid">
-  <% if (availableVehicles.length === 0) { %>
-    <p>No vehicles currently available for rental.</p>
-  <% } else { %>
-    <% availableVehicles.forEach(vehicle => { %>
-      <div class="car-card">
-        <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>" style="object-fit: contain;">
-        <h3><%= vehicle.make %> <%= vehicle.model %></h3>
-        <p class="price">$<%= vehicle.pricePerDay %>/day</p>
-        <p><%= vehicle.type %> • <%= vehicle.year %> • <%= vehicle.mpg %></p>
-        <button class="btn" onclick="window.location.href='/rentals/payment?vehicleId=<%= vehicle._id %>'">Reserve</button>
-      </div>
-    <% }) %>
-  <% } %>
-</section>
+        <!-- Advanced Search & Filters -->
+        <section class="search-filters-section">
+            <div class="search-container">
+                <div class="search-box">
+                    <div class="search-input-group">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" placeholder="Search make, model, or feature..." class="search-input" />
+                    </div>
+                    <button class="search-btn">Search</button>
+                </div>
+                
+                <div class="filter-options">
+                    <div class="filter-group">
+                        <label>Vehicle Type</label>
+                        <select class="filter-select">
+                            <option value="">All Types</option>
+                            <option value="sedan">Sedan</option>
+                            <option value="suv">SUV</option>
+                            <option value="luxury">Luxury</option>
+                            <option value="sports">Sports</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Price Range</label>
+                        <select class="filter-select">
+                            <option value="">Any Price</option>
+                            <option value="0-50">$0 - $50/day</option>
+                            <option value="51-100">$51 - $100/day</option>
+                            <option value="101-150">$101 - $150/day</option>
+                            <option value="151+">$151+/day</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>Sort By</label>
+                        <select class="filter-select">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-</main>
+        <!-- Results Summary -->
+        <section class="results-summary">
+            <div class="results-info">
+                <span class="results-count"><%= availableVehicles.length %> vehicles available</span>
+                <div class="view-options">
+                    <button class="view-btn active" data-view="grid">
+                        <i class="fas fa-th"></i> Grid
+                    </button>
+                    <button class="view-btn" data-view="list">
+                        <i class="fas fa-list"></i> List
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vehicle Grid -->
+        <section class="vehicles-section">
+            <% if (availableVehicles.length === 0) { %>
+                <div class="no-vehicles">
+                    <div class="no-vehicles-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>No vehicles currently available</h3>
+                    <p>We're updating our fleet. Please check back soon or contact our support team for assistance.</p>
+                    <a href="/docs/support" class="contact-support-btn">Contact Support</a>
+                </div>
+            <% } else { %>
+                <div class="vehicles-grid" id="vehiclesGrid">
+                    <% availableVehicles.forEach(vehicle => { %>
+                        <div class="vehicle-card">
+                            <div class="vehicle-image-container">
+                                <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>" class="vehicle-image">
+                                <div class="vehicle-overlay">
+                                    <div class="vehicle-actions">
+                                        <button class="quick-view-btn" onclick="quickView('<%= vehicle._id %>')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="favorite-btn" onclick="toggleFavorite('<%= vehicle._id %>')">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="vehicle-badges">
+                                    <% if (vehicle.type === 'luxury') { %>
+                                        <span class="badge luxury">Luxury</span>
+                                    <% } else if (vehicle.type === 'sports') { %>
+                                        <span class="badge sports">Sports</span>
+                                    <% } %>
+                                    <span class="badge available">Available</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-details">
+                                <div class="vehicle-header">
+                                    <h3 class="vehicle-title"><%= vehicle.make %> <%= vehicle.model %></h3>
+                                    <div class="vehicle-rating">
+                                        <i class="fas fa-star"></i>
+                                        <span>4.8</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="vehicle-specs">
+                                    <div class="spec-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span><%= vehicle.year %></span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="fas fa-gas-pump"></i>
+                                        <span><%= vehicle.mpg %> MPG</span>
+                                    </div>
+                                    <div class="spec-item">
+                                        <i class="fas fa-users"></i>
+                                        <span>5 Seats</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="vehicle-features">
+                                    <span class="feature-tag">Automatic</span>
+                                    <span class="feature-tag">AC</span>
+                                    <span class="feature-tag">Bluetooth</span>
+                                </div>
+                                
+                                <div class="vehicle-pricing">
+                                    <div class="price-info">
+                                        <span class="price-amount">$<%= vehicle.pricePerDay %></span>
+                                        <span class="price-period">/day</span>
+                                    </div>
+                                    <div class="price-details">
+                                        <span class="deposit-info">$200 deposit</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="vehicle-actions-bottom">
+                                    <button class="reserve-btn" onclick="window.location.href='/rentals/payment?vehicleId=<%= vehicle._id %>'">
+                                        <i class="fas fa-calendar-check"></i>
+                                        Reserve Now
+                                    </button>
+                                    <button class="details-btn" onclick="showVehicleDetails('<%= vehicle._id %>')">
+                                        <i class="fas fa-info-circle"></i>
+                                        Details
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+            <% } %>
+        </section>
+
+        <!-- Load More Section -->
+        <section class="load-more-section">
+            <div class="load-more-content">
+                <p>Showing <%= availableVehicles.length %> of <%= availableVehicles.length %> vehicles</p>
+                <button class="load-more-btn" disabled>
+                    <i class="fas fa-spinner"></i>
+                    All vehicles loaded
+                </button>
+            </div>
+        </section>
+
+        </main>
 <%- include('../partials/footer.ejs') %>
