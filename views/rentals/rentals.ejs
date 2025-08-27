@@ -1,84 +1,172 @@
-<%- include('../partials/header') %>
-  <link rel="stylesheet" href="/css/rentals-list.css" />
-  <h3>Rentals for <%= user.firstName %>
-      <%= user.lastName %>!</h3>
-  <section class="rentals-list">
-    <% if (sessions.length===0) { %>
-      <p>You have no rental sessions yet.</p>
-      <% } else { %>
-        <table>
-          <thead>
-            <tr>
-              <th>Vehicle</th>
-              <th>Period</th>
-              <th>Days</th>
-              <th>Rate / day</th>
-              <th>Total Fee</th>
-              <th>Status</th>
-              <th>Booked On</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% sessions.forEach(session=> {
-              const start = new Date(session.startDate);
-              const end = new Date(session.endDate);
-              const msPerDay = 1000 * 60 * 60 * 24;
-              const days = Math.ceil((end - start) / msPerDay);
-              const rate = session.vehicle.pricePerDay;
-              const totalFee = (days * rate).toFixed(2);
-              %>
-              <tr>
-                <td class="vehicle-cell">
-                  <img src="<%= session.vehicle.imageUrl %>"
-                    alt="<%= session.vehicle.make %> <%= session.vehicle.model %>" width="100" />
-                  <div>
-                    <strong>
-                      <%= session.vehicle.make %>
-                        <%= session.vehicle.model %> (<%= session.vehicle.year %>)
-                    </strong><br />
-                    VIN: <%= session.vehicle.vin %>
-                  </div>
-                </td>
-                <!--
-                <td>
-                  <%= start.toLocaleString() %><br />
-                    &mdash;
-                    <%= end.toLocaleString() %>
-                </td>
-                -->
+<%- include('../partials/header', { currentPage: 'rentals' }) %>
 
-<td class="period-cell">
-  <% 
-    const dateOpts = { day: '2-digit', month: '2-digit', year: 'numeric' };
-    const timeOpts = { hour: '2-digit', minute: '2-digit', hour12: false };
-  %>
-  <div class="period-text clamp-2">
-    <%= start.toLocaleDateString('en-US', dateOpts) %>
-    <%= start.toLocaleTimeString('en-US', timeOpts) %>
-    <br /> &mdash;
-    <%= end.toLocaleDateString('en-US', dateOpts) %>
-    <%= end.toLocaleTimeString('en-US', timeOpts) %>
-  </div>
-</td>
-                <td>
-                  <%= days %>
-                </td>
-                <td>$<%= rate.toFixed(2) %>
-                </td>
-                <td>$<%= totalFee %>
-                </td>
-                <td>
-                  <%= session.status.charAt(0).toUpperCase() + session.status.slice(1) %>
-                </td>
-                <td>
-                  <%= new Date(session.createdAt).toLocaleString() %>
-                </td>
-              </tr>
-              <% }); %>
-          </tbody>
-        </table>
-        <% } %>
-  </section>
-  </main>
+        <!-- Rentals Header Section -->
+        <section class="rentals-header">
+            <div class="rentals-header-content">
+                <h1>Your Rental History</h1>
+                <p>Track all your past and current vehicle rentals with detailed information and status updates.</p>
+            </div>
+        </section>
 
-  <%- include('../partials/footer.ejs') %>
+        <!-- Rentals Summary -->
+        <section class="rentals-summary">
+            <div class="summary-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number"><%= sessions.length %></span>
+                        <span class="stat-label">Total Rentals</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number"><%= sessions.filter(s => s.status === 'active').length %></span>
+                        <span class="stat-label">Active Rentals</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number"><%= sessions.filter(s => s.status === 'completed').length %></span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rentals List Section -->
+        <section class="rentals-list-section">
+            <% if (sessions.length === 0) { %>
+                <div class="no-rentals">
+                    <div class="no-rentals-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>No Rentals Yet</h3>
+                    <p>You haven't made any rentals yet. Start exploring our vehicle fleet to begin your journey!</p>
+                    <a href="/rentals/browse" class="browse-vehicles-btn">Browse Vehicles</a>
+                </div>
+            <% } else { %>
+                <div class="rentals-container">
+                    <div class="rentals-header-row">
+                        <h2>Rental Sessions</h2>
+                        <div class="filter-options">
+                            <select class="status-filter">
+                                <option value="">All Statuses</option>
+                                <option value="active">Active</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="rentals-grid">
+                        <% sessions.forEach(session => {
+                            const start = new Date(session.startDate);
+                            const end = new Date(session.endDate);
+                            const msPerDay = 1000 * 60 * 60 * 24;
+                            const days = Math.ceil((end - start) / msPerDay);
+                            const rate = session.vehicle.pricePerDay;
+                            const totalFee = (days * rate).toFixed(2);
+                            const dateOpts = { day: '2-digit', month: '2-digit', year: 'numeric' };
+                            const timeOpts = { hour: '2-digit', minute: '2-digit', hour12: false };
+                        %>
+                            <div class="rental-card">
+                                <div class="rental-header">
+                                    <div class="vehicle-info">
+                                        <img src="<%= session.vehicle.imageUrl %>" 
+                                             alt="<%= session.vehicle.make %> <%= session.vehicle.model %>" 
+                                             class="vehicle-thumbnail" />
+                                        <div class="vehicle-details">
+                                            <h3><%= session.vehicle.make %> <%= session.vehicle.model %></h3>
+                                            <p class="vehicle-year"><%= session.vehicle.year %></p>
+                                            <p class="vehicle-vin">VIN: <%= session.vehicle.vin %></p>
+                                        </div>
+                                    </div>
+                                    <div class="status-badge <%= session.status %>">
+                                        <%= session.status.charAt(0).toUpperCase() + session.status.slice(1) %>
+                                    </div>
+                                </div>
+                                
+                                <div class="rental-details">
+                                    <div class="detail-row">
+                                        <div class="detail-item">
+                                            <i class="fas fa-calendar-alt"></i>
+                                            <div class="detail-content">
+                                                <span class="detail-label">Rental Period</span>
+                                                <span class="detail-value">
+                                                    <%= start.toLocaleDateString('en-US', dateOpts) %> - 
+                                                    <%= end.toLocaleDateString('en-US', dateOpts) %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-clock"></i>
+                                            <div class="detail-content">
+                                                <span class="detail-label">Duration</span>
+                                                <span class="detail-value"><%= days %> day<%= days !== 1 ? 's' : '' %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="detail-row">
+                                        <div class="detail-item">
+                                            <i class="fas fa-dollar-sign"></i>
+                                            <div class="detail-content">
+                                                <span class="detail-label">Daily Rate</span>
+                                                <span class="detail-value">$<%= rate.toFixed(2) %></span>
+                                            </div>
+                                        </div>
+                                        <div class="detail-item">
+                                            <i class="fas fa-calculator"></i>
+                                            <div class="detail-content">
+                                                <span class="detail-label">Total Fee</span>
+                                                <span class="detail-value total-fee">$<%= totalFee %></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="rental-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-calendar-plus"></i>
+                                            <span>Booked on <%= new Date(session.createdAt).toLocaleDateString() %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="rental-actions">
+                                    <% if (session.status === 'active') { %>
+                                        <button class="action-btn primary" onclick="extendRental('<%= session._id %>')">
+                                            <i class="fas fa-plus"></i>
+                                            Extend Rental
+                                        </button>
+                                        <button class="action-btn secondary" onclick="viewDetails('<%= session._id %>')">
+                                            <i class="fas fa-eye"></i>
+                                            View Details
+                                        </button>
+                                    <% } else { %>
+                                        <button class="action-btn primary" onclick="rentAgain('<%= session.vehicle._id %>')">
+                                            <i class="fas fa-redo"></i>
+                                            Rent Again
+                                        </button>
+                                        <button class="action-btn secondary" onclick="viewDetails('<%= session._id %>')">
+                                            <i class="fas fa-eye"></i>
+                                            View Details
+                                        </button>
+                                    <% } %>
+                                </div>
+                            </div>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } %>
+        </section>
+
+        </main>
+<%- include('../partials/footer.ejs') %>
