@@ -1019,6 +1019,7 @@ footer p {
   gap: 1rem;
   margin-bottom: 2rem;
   align-items: center;
+  position: relative;
 }
 
 .search-input-group {
@@ -1033,6 +1034,7 @@ footer p {
   transform: translateY(-50%);
   color: #9ca3af;
   font-size: 1.1rem;
+  z-index: 1;
 }
 
 .search-input {
@@ -1045,6 +1047,7 @@ footer p {
   color: #1a1a1a;
   transition: all 0.3s ease;
   background: #f9fafb;
+  box-sizing: border-box;
 }
 
 .search-input:focus {
@@ -1055,7 +1058,7 @@ footer p {
 }
 
 .search-btn {
-  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  background: #2563eb;
   color: white;
   border: none;
   padding: 1rem 2rem;
@@ -1063,9 +1066,8 @@ footer p {
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .search-btn:hover {
