@@ -78,7 +78,7 @@ exports.payment = async (req, res, next) => {
 
     res.render('./rentals/payment', {
       currentPage: 'payment',
-      extraStyles: '/css/payment.css',
+              extraStyles: '/css/style.css',
       defaultStyles: true,
       vehicle,
       bookedRanges
