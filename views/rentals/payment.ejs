@@ -11,23 +11,39 @@
 
     <form action="/rentals/confirm" method="POST">
       <input type="hidden" name="vehicleId" value="<%= vehicle._id %>" />
-      <label>Rental Start Date</label>
-      <input type="text" name="startDate" id="startDate" required>
+      
+      <!-- Rental Dates Section -->
+      <div class="form-group">
+        <label for="startDate">Rental Start Date</label>
+        <input type="text" name="startDate" id="startDate" placeholder="Select start date" required>
+      </div>
 
-      <label>Rental End Date</label>
-      <input type="text" name="endDate" id="endDate" required>
+      <div class="form-group">
+        <label for="endDate">Rental End Date</label>
+        <input type="text" name="endDate" id="endDate" placeholder="Select end date" required>
+      </div>
 
-      <!-- Payment Info Fields -->
-      <label>Card Number</label>
-      <input type="text" name="cardNum" maxlength="19" required />
-      <label>Expiration</label>
-      <input type="month" name="exp" required />
-      <label>CVC</label>
-      <input type="text" name="cvc" maxlength="4" required />
+      <!-- Payment Information Section -->
+      <div class="form-group">
+        <label for="cardNum">Card Number</label>
+        <input type="text" name="cardNum" id="cardNum" maxlength="19" placeholder="1234 5678 9012 3456" required />
+      </div>
 
-      <p id="totalPrice" style="margin-top: 1rem; font-weight: 600; color: #007BFF;"></p>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="exp">Expiration Date</label>
+          <input type="month" name="exp" id="exp" required />
+        </div>
+        <div class="form-group">
+          <label for="cvc">CVC</label>
+          <input type="text" name="cvc" id="cvc" maxlength="4" placeholder="123" required />
+        </div>
+      </div>
 
-      <button type="submit">Pay Now</button>
+      <!-- Total Price Display -->
+      <div id="totalPrice" style="margin: 1.5rem 0; font-weight: 600; color: #007BFF;"></div>
+
+      <button type="submit">Complete Payment</button>
     </form>
   </div>
 </main>
