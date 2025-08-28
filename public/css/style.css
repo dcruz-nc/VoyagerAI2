@@ -6605,3 +6605,306 @@ footer p {
     }
 }
 
+/* Payment Page Styles */
+.payment-page {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+  max-width: 800px;
+  margin: 2rem auto;
+  font-family: 'Inter', sans-serif;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb, #3b82f6, #8b5cf6);
+  border-radius: 20px 20px 0 0;
+}
+
+.payment-page h2 {
+  font-size: 2.5rem;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 2rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.vehicle-summary {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 16px;
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.vehicle-summary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.15);
+  border-color: rgba(37, 99, 235, 0.2);
+}
+
+.vehicle-summary img {
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.vehicle-summary:hover img {
+  transform: scale(1.02);
+}
+
+.vehicle-summary h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.75rem;
+  color: #1e293b;
+  font-weight: 700;
+  font-family: 'Poppins', sans-serif;
+}
+
+.vehicle-summary p {
+  color: #64748b;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.vehicle-summary strong {
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  font-family: 'Poppins', sans-serif;
+}
+
+.payment-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid rgba(37, 99, 235, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.payment-page form label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.payment-page form input,
+.payment-page form select {
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  font-family: 'Inter', sans-serif;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.payment-page form input:focus,
+.payment-page form select:focus {
+  border-color: #2563eb;
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+  transform: translateY(-1px);
+}
+
+.payment-page form input:hover,
+.payment-page form select:hover {
+  border-color: #d1d5db;
+  background: #ffffff;
+}
+
+.payment-page button[type="submit"] {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+  color: #fff;
+  border: none;
+  padding: 1.25rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  margin-top: 1.5rem;
+  transition: all 0.3s ease;
+  font-family: 'Inter', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.payment-page button[type="submit"]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.payment-page button[type="submit"]:hover::before {
+  left: 100%;
+}
+
+.payment-page button[type="submit"]:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+}
+
+.payment-page button[type="submit"]:active {
+  transform: translateY(-1px);
+}
+
+/* Total Price Display */
+#totalPrice {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #e2e8f0;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 1.5rem 0;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+#totalPrice::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #10b981, #34d399);
+}
+
+/* Form Row Layout for Better Organization */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-page {
+    padding: 2rem;
+    margin: 1rem;
+    border-radius: 16px;
+  }
+  
+  .payment-page h2 {
+    font-size: 2rem;
+  }
+  
+  .vehicle-summary {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .vehicle-summary img {
+    max-height: 220px;
+  }
+  
+  .vehicle-summary h3 {
+    font-size: 1.5rem;
+  }
+  
+  .payment-page form {
+    padding: 1.5rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .payment-page button[type="submit"] {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .payment-page {
+    padding: 1.5rem;
+    margin: 0.5rem;
+  }
+  
+  .payment-page h2 {
+    font-size: 1.75rem;
+  }
+  
+  .vehicle-summary {
+    padding: 1rem;
+  }
+  
+  .vehicle-summary img {
+    max-height: 180px;
+  }
+  
+  .vehicle-summary h3 {
+    font-size: 1.25rem;
+  }
+  
+  .payment-page form {
+    padding: 1rem;
+  }
+  
+  .payment-page form input,
+  .payment-page form select {
+    padding: 0.875rem 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .payment-page button[type="submit"] {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.95rem;
+  }
+}
+
