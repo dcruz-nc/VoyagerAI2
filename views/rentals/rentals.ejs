@@ -1,10 +1,12 @@
-<%- include('../partials/header', { currentPage: 'rentals' }) %>
+<%- include('../partials/header', { currentPage: 'rentals', extraStyles: '/css/style.css' }) %>
 
         <!-- Rentals Header Section -->
-        <section class="rentals-header">
-            <div class="rentals-header-content">
-                <h1>Your Rental History</h1>
-                <p>Track all your past and current vehicle rentals with detailed information and status updates.</p>
+        <section class="hero-section">
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1>Your Rental History</h1>
+                    <p>Track all your past and current vehicle rentals with detailed information and status updates.</p>
+                </div>
             </div>
         </section>
 
@@ -134,22 +136,25 @@
                                 
                                 <div class="rental-actions">
                                     <% if (session.status === 'active') { %>
-                                        <button class="action-btn primary" onclick="extendRental('<%= session._id %>')">
+                                        <button class="action-btn primary coming-soon" onclick="showComingSoonMessage('Extend Rental')">
                                             <i class="fas fa-plus"></i>
                                             Extend Rental
+                                            <span class="coming-soon-badge">Coming Soon</span>
                                         </button>
-                                        <button class="action-btn secondary" onclick="viewDetails('<%= session._id %>')">
+                                        <button class="action-btn secondary coming-soon" onclick="showComingSoonMessage('View Details')">
                                             <i class="fas fa-eye"></i>
                                             View Details
+                                            <span class="coming-soon-badge">Coming Soon</span>
                                         </button>
                                     <% } else { %>
                                         <button class="action-btn primary" onclick="rentAgain('<%= session.vehicle._id %>')">
                                             <i class="fas fa-redo"></i>
                                             Rent Again
                                         </button>
-                                        <button class="action-btn secondary" onclick="viewDetails('<%= session._id %>')">
+                                        <button class="action-btn secondary coming-soon" onclick="showComingSoonMessage('View Details')">
                                             <i class="fas fa-eye"></i>
                                             View Details
+                                            <span class="coming-soon-badge">Coming Soon</span>
                                         </button>
                                     <% } %>
                                 </div>
@@ -159,6 +164,41 @@
                 </div>
             <% } %>
         </section>
+
+        <!-- Coming Soon Modal -->
+        <div id="comingSoonModal" class="coming-soon-modal">
+            <div class="coming-soon-content">
+                <h3>Coming Soon!</h3>
+                <p id="comingSoonMessage">This feature is currently under development and will be available soon.</p>
+                <button class="coming-soon-close" onclick="closeComingSoonModal()">Got it!</button>
+            </div>
+        </div>
+
+        <script>
+            function showComingSoonMessage(feature) {
+                const modal = document.getElementById('comingSoonModal');
+                const message = document.getElementById('comingSoonMessage');
+                message.textContent = `${feature} feature is currently under development and will be available soon.`;
+                modal.classList.add('show');
+            }
+
+            function closeComingSoonModal() {
+                const modal = document.getElementById('comingSoonModal');
+                modal.classList.remove('show');
+            }
+
+            function rentAgain(vehicleId) {
+                // Redirect to browse page to rent the same vehicle
+                window.location.href = `/rentals/browse?vehicle=${vehicleId}`;
+            }
+
+            // Close modal when clicking outside
+            document.getElementById('comingSoonModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeComingSoonModal();
+                }
+            });
+        </script>
 
         </main>
 <%- include('../partials/footer.ejs') %>
