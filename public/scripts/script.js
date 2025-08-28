@@ -49,4 +49,33 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   });
+
+  // Featured vehicle card functions
+  // Quick view functionality
+  window.quickView = function(vehicleId) {
+    // For now, redirect to browse page - can be enhanced with modal later
+    window.location.href = `/rentals/browse?highlight=${vehicleId}`;
+  };
+
+  // Toggle favorite functionality
+  window.toggleFavorite = function(vehicleId) {
+    const btn = event.target.closest('.favorite-btn');
+    if (btn) {
+      btn.classList.toggle('favorited');
+      const icon = btn.querySelector('i');
+      if (btn.classList.contains('favorited')) {
+        icon.className = 'fas fa-heart';
+        icon.style.color = '#ef4444';
+      } else {
+        icon.className = 'fas fa-heart';
+        icon.style.color = '#374151';
+      }
+    }
+  };
+
+  // Show vehicle details functionality
+  window.showVehicleDetails = function(vehicleId) {
+    // For now, redirect to browse page - can be enhanced with modal later
+    window.location.href = `/rentals/browse?details=${vehicleId}`;
+  };
 });

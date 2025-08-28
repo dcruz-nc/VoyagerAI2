@@ -11,11 +11,6 @@
                         <a href="/docs/mission" class="secondary-btn">Learn More</a>
                     </div>
                 </div>
-                <div class="hero-visual">
-                    <div class="hero-image-placeholder">
-                        <i class="fas fa-car"></i>
-                    </div>
-                </div>
             </div>
         </section>
 
@@ -25,26 +20,81 @@
                 <h2>Featured Vehicles</h2>
                 <p>Handpicked vehicles for the best driving experience</p>
             </div>
-            <div class="vehicle-grid">
+            <div class="vehicles-grid" id="featuredVehiclesGrid">
                 <% featuredVehicles.forEach(vehicle => { %>
-                    <div class="vehicle-card">
-                        <div class="vehicle-image">
-                            <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>">
-                            <div class="vehicle-badge">Featured</div>
+                    <div class="vehicle-card featured-vehicle-card">
+                        <div class="vehicle-image-container">
+                            <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>" class="vehicle-image">
+                            <div class="vehicle-overlay">
+                                <div class="vehicle-actions">
+                                    <button class="quick-view-btn" onclick="quickView('<%= vehicle._id %>')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="favorite-btn" onclick="toggleFavorite('<%= vehicle._id %>')">
+                                        <i class="fas fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="vehicle-badges">
+                                <span class="badge featured-badge">Featured</span>
+                                <% if (vehicle.type === 'luxury') { %>
+                                    <span class="badge luxury">Luxury</span>
+                                <% } else if (vehicle.type === 'sports') { %>
+                                    <span class="badge sports">Sports</span>
+                                <% } %>
+                            </div>
                         </div>
-                        <div class="vehicle-info">
-                            <h3><%= vehicle.make %> <%= vehicle.model %></h3>
-                            <p class="vehicle-type"><%= vehicle.type %></p>
+                        
+                        <div class="vehicle-details">
+                            <div class="vehicle-header">
+                                <h3 class="vehicle-title"><%= vehicle.make %> <%= vehicle.model %></h3>
+                                <div class="vehicle-rating">
+                                    <i class="fas fa-star"></i>
+                                    <span>4.8</span>
+                                </div>
+                            </div>
+                            
+                            <div class="vehicle-specs">
+                                <div class="spec-item">
+                                    <i class="fas fa-calendar"></i>
+                                    <span><%= vehicle.year %></span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-gas-pump"></i>
+                                    <span><%= vehicle.mpg %> MPG</span>
+                                </div>
+                                <div class="spec-item">
+                                    <i class="fas fa-users"></i>
+                                    <span>5 Seats</span>
+                                </div>
+                            </div>
+                            
                             <div class="vehicle-features">
                                 <span class="feature-tag">Automatic</span>
-                                <span class="feature-tag">4 Seats</span>
                                 <span class="feature-tag">AC</span>
+                                <span class="feature-tag">Bluetooth</span>
                             </div>
-                            <div class="vehicle-price">
-                                <span class="price-amount">$<%= vehicle.pricePerDay %></span>
-                                <span class="price-period">/day</span>
+                            
+                            <div class="vehicle-pricing">
+                                <div class="price-info">
+                                    <span class="price-amount">$<%= vehicle.pricePerDay %></span>
+                                    <span class="price-period">/day</span>
+                                </div>
+                                <div class="price-details">
+                                    <span class="deposit-info">$200 deposit</span>
+                                </div>
                             </div>
-                            <a href="/rentals/browse" class="rent-now-btn">Rent Now</a>
+                            
+                            <div class="vehicle-actions-bottom">
+                                <button class="reserve-btn" onclick="window.location.href='/rentals/payment?vehicleId=<%= vehicle._id %>'">
+                                    <i class="fas fa-calendar-check"></i>
+                                    Reserve Now
+                                </button>
+                                <button class="details-btn" onclick="showVehicleDetails('<%= vehicle._id %>')">
+                                    <i class="fas fa-info-circle"></i>
+                                    Details
+                                </button>
+                            </div>
                         </div>
                     </div>
                 <% }) %>
