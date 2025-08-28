@@ -1,10 +1,12 @@
-<%- include('../partials/header', { currentPage: 'login', defaultStyles: true }) %>
+<%- include('../partials/header', { currentPage: 'login', extraStyles: '/css/style.css' }) %>
 
         <!-- Login Header Section -->
-        <section class="login-header">
-            <div class="login-header-content">
-                <h1>Welcome Back</h1>
-                <p>Sign in to your VoyagerAI account to continue</p>
+        <section class="hero-section">
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1>Welcome Back</h1>
+                    <p>Sign in to your VoyagerAI account to continue</p>
+                </div>
             </div>
         </section>
 
@@ -35,7 +37,7 @@
                         </div>
 
                         <div class="form-actions">
-                            <button class="login-btn" type="submit">
+                            <button class="cta-button" type="submit">
                                 <i class="fas fa-sign-in-alt"></i>
                                 Sign In
                             </button>

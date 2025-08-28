@@ -13,4 +13,7 @@ router.get('/available', vehicleController.getAvailableVehicles);
 // GET Featured vehicles
 router.get('/featured', vehicleController.getAvailableVehicles);
 
+// GET search vehicles with filters
+router.get('/search', vehicleController.searchVehicles);
+
 module.exports = router;

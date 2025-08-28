@@ -1,13 +1,12 @@
-<%- include('../partials/header', { currentPage: 'profile', defaultStyles: true }) %>
-
-<!-- Ensure main styles are loaded for modern header/footer -->
-<link rel="stylesheet" href="/css/style.css" />
+<%- include('../partials/header', { currentPage: 'profile', extraStyles: '/css/style.css' }) %>
 
         <!-- Profile Header Section -->
-        <section class="profile-header">
-            <div class="profile-header-content">
-                <h1>Your Profile</h1>
-                <p>Manage your account information and preferences</p>
+        <section class="hero-section">
+            <div class="hero-content-wrapper">
+                <div class="hero-text">
+                    <h1>Your Profile</h1>
+                    <p>Manage your account information and preferences</p>
+                </div>
             </div>
         </section>
 
