@@ -6,7 +6,7 @@ exports.isGuest = (req, res, next) => {
     if (!req.session.user) {
         return next();
     } else {
-        req.flash('error', 'You are already logged in');
+        req.flash('warning', 'You are already logged in');
         return res.redirect('/users/profile');
     }
 };
@@ -19,7 +19,7 @@ exports.isLoggedIn = async (req, res, next) => {
 
         return next();
     } else {
-        req.flash('error', 'You need to log in first');
+        req.flash('loginRequired', 'You need to log in first to access this feature');
         return res.redirect('/users/login');
     }
 };

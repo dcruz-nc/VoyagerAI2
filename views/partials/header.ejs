@@ -25,7 +25,7 @@
     <% if (typeof extraStyles !== 'undefined' && extraStyles) { %>
         <link rel="stylesheet" href="<%= extraStyles %>" />
     <% } %>
-    <link rel="stylesheet" href="/css/error.css" />
+
 </head>
 
 <body>
@@ -56,5 +56,20 @@
       <%if(successMessages.length >0) {
           successMessages.forEach(message => { %>
               <div class="success"> <%=message%> </div>
+          <%})
+      }%>
+      <%if(warningMessages && warningMessages.length >0) {
+          warningMessages.forEach(message => { %>
+              <div class="warning"> <%=message%> </div>
+          <%})
+      }%>
+      <%if(loginRequiredMessages && loginRequiredMessages.length >0) {
+          loginRequiredMessages.forEach(message => { %>
+              <div class="error login-required"> <%=message%> </div>
+          <%})
+      }%>
+      <%if(infoMessages && infoMessages.length >0) {
+          infoMessages.forEach(message => { %>
+              <div class="info"> <%=message%> </div>
           <%})
       }%>

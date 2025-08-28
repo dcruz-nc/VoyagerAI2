@@ -3,7 +3,7 @@ const model = require('../models/user');
 exports.signup = (req, res)=>{
     res.render('./users/signup', { 
                         currentPage: 'signup', 
-                        extraStyles: '/css/signup.css'
+                        defaultStyles: true
                     });
 };
 
@@ -37,7 +37,7 @@ exports.create = (req, res, next)=>{
 exports.getUserLogin = (req, res, next) => {
     res.render('./users/login', { 
                     currentPage: 'login', 
-                    extraStyles: '/css/login.css'
+                    defaultStyles: true
                 });
 }
 
@@ -77,7 +77,7 @@ exports.profile = (req, res, next)=>{
         res.render('./users/profile', {
             user,
             currentPage: 'profile',
-            extraStyles: '/css/profile.css'
+            defaultStyles: true
         });
     })
     .catch(err => next(err));

@@ -58,6 +58,9 @@ app.use((req, res, next) => {
     res.locals.user = req.session.user||null;
     res.locals.errorMessages = req.flash('error');
     res.locals.successMessages = req.flash('success');
+    res.locals.warningMessages = req.flash('warning');
+    res.locals.infoMessages = req.flash('info');
+    res.locals.loginRequiredMessages = req.flash('loginRequired');
     next();
 });
 
@@ -76,7 +79,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', async (req, res, next) => {
   try {
     const featuredVehicles = await Vehicle.find({ isFeatured: true });
-    res.render('index', { featuredVehicles });
+    res.render('index', { featuredVehicles, defaultStyles: true });
   } catch (err) {
     next(err);
   }
@@ -105,7 +108,7 @@ app.use((err, req, res, next) => {
         err.message = 'Internal Server Error';
     }
     res.status(err.status);
-    res.render('error', {error: err});
+    res.render('error', {error: err, defaultStyles: true});
 })
 
 
