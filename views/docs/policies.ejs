@@ -1,62 +1,117 @@
-<%- include('../partials/header') %>            
-<h1>Rental Policies – VoyagerAI</h1>
+<%- include('../partials/header') %>
 
-<section>
-  <h2>Summary</h2>
-  <ul>
-    <li>Minimum age: 19</li>
-    <li>Full refund if canceled ≥24hrs in advance</li>
-    <li>Optional insurance: Basic ($10), Standard ($20), Premium ($30)</li>
-    <li>Return car with full tank</li>
-  </ul>
+<!-- Policies Header Section -->
+<section class="policies-header">
+  <div class="policies-header-content">
+    <h1>Rental Policies</h1>
+    <p>Review our comprehensive rental policies and requirements for VoyagerAI vehicle rentals.</p>
+  </div>
 </section>
 
-<section>
-  <h2>Age Check</h2>
-  <input type="number" id="age" placeholder="Enter age">
-  <button onclick="checkAge()">Check</button>
-  <p id="ageResult" class="output"></p>
+<!-- Policies Content Section -->
+<section class="policies-content">
+  <div class="policies-container">
+    <div class="policies-list">
+      <h1>Rental Policies – VoyagerAI</h1>
+
+      <div class="policy-section">
+        <h2>Age Requirements</h2>
+        <p>All renters must be at least <strong>19 years of age</strong> with a valid driver's license. Drivers under 25 may be subject to additional fees and restrictions.</p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Reservation & Cancellation</h2>
+        <ul>
+          <li>Reservations can be made up to 6 months in advance</li>
+          <li>Full refund if canceled 24 hours or more before pickup time</li>
+          <li>50% refund if canceled between 2-24 hours before pickup</li>
+          <li>No refund for cancellations less than 2 hours before pickup</li>
+          <li>No-show reservations will be charged the full rental amount</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2>Insurance Options</h2>
+        <p>We offer comprehensive insurance coverage to protect you during your rental:</p>
+        <ul>
+          <li><strong>Basic Coverage ($10/day):</strong> Covers damage to the rental vehicle up to $1,000</li>
+          <li><strong>Standard Coverage ($20/day):</strong> Covers damage to the rental vehicle up to $5,000</li>
+          <li><strong>Premium Coverage ($30/day):</strong> Covers damage to the rental vehicle up to $25,000</li>
+          <li><strong>No Insurance:</strong> You are responsible for all damages to the rental vehicle</li>
+        </ul>
+        <p><em>Note: Personal auto insurance may provide additional coverage. Please check with your insurance provider.</em></p>
+      </div>
+
+      <div class="policy-section">
+        <h2>Fuel Policy</h2>
+        <p>All vehicles must be returned with a <strong>full tank of fuel</strong>. Failure to do so will result in a refueling charge of $25 plus the cost of fuel.</p>
+        <ul>
+          <li>Fuel level will be documented at pickup and return</li>
+          <li>Refueling charges are non-negotiable</li>
+          <li>We recommend refueling within 10 miles of our location</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2>Return Policy</h2>
+        <ul>
+          <li>Vehicles must be returned on time to avoid late fees</li>
+          <li>Late return fees: $10 per hour (first 2 hours), $25 per hour thereafter</li>
+          <li>Maximum late fee: $100 per day</li>
+          <li>Early returns may be eligible for partial refunds</li>
+          <li>All vehicles are inspected upon return</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2>Vehicle Condition</h2>
+        <p>Renters are responsible for maintaining the vehicle in good condition:</p>
+        <ul>
+          <li>No smoking in any vehicles</li>
+          <li>Pets must be in appropriate carriers</li>
+          <li>Excessive cleaning fees may apply for heavily soiled vehicles</li>
+          <li>Report any mechanical issues immediately</li>
+          <li>Do not exceed the vehicle's passenger or cargo capacity</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2>Additional Fees</h2>
+        <ul>
+          <li>Additional driver fee: $15 per day</li>
+          <li>Underage driver fee (19-24): $25 per day</li>
+          <li>One-way rental fee: $50</li>
+          <li>After-hours pickup/drop-off: $35</li>
+          <li>Traffic violation processing: $25</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2>Prohibited Activities</h2>
+        <p>The following activities are strictly prohibited and may result in immediate termination of the rental agreement:</p>
+        <ul>
+          <li>Off-road driving</li>
+          <li>Racing or reckless driving</li>
+          <li>Transporting illegal substances</li>
+          <li>Using the vehicle for commercial purposes without permission</li>
+          <li>Allowing unauthorized drivers to operate the vehicle</li>
+        </ul>
+      </div>
+
+      <div class="policy-section">
+        <h2>Contact Information</h2>
+        <p>If you have any questions about our policies or need assistance during your rental:</p>
+        <ul>
+          <li><strong>24/7 Support:</strong> 1-800-VOYAGER</li>
+          <li><strong>Email:</strong> support@voyagerai.com</li>
+          <li><strong>Emergency Roadside:</strong> 1-800-VOYAGER-HELP</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
 
-<section>
-  <h2>Cancellation Refund</h2>
-  <input type="number" id="cancelHours" placeholder="Hours before pickup">
-  <button onclick="checkRefund()">Calculate</button>
-  <p id="refundResult" class="output"></p>
-</section>
+<!-- Include Policies-specific CSS -->
+<link rel="stylesheet" href="/css/policies.css">
 
-<section>
-  <h2>Insurance Selection</h2>
-  <label><input type="radio" name="insurance" value="basic"> Basic – $10/day</label><br>
-  <label><input type="radio" name="insurance" value="standard"> Standard – $20/day</label><br>
-  <label><input type="radio" name="insurance" value="premium"> Premium – $30/day</label><br>
-  <label><input type="radio" name="insurance" value="none"> No Insurance</label><br>
-  <button onclick="checkInsurance()">Check</button>
-  <p id="insuranceResult" class="output"></p>
-</section>
-
-<section>
-  <h2>Fuel Status</h2>
-  <select id="fuelStatus">
-    <option value="">-- Select --</option>
-    <option value="full">Full tank</option>
-    <option value="low">Partial tank</option>
-  </select>
-  <button onclick="checkFuel()">Check</button>
-  <p id="fuelResult" class="output"></p>
-</section>
-
-<section>
-  <h2>Late Return Fee</h2>
-  <input type="number" id="lateHours" placeholder="Hours late">
-  <button onclick="calculateLateFee()">Calculate</button>
-  <p id="lateResult" class="output"></p>
-</section>
-
-<section>
-  <h2>Submit</h2>
-  <button onclick="submitPolicy()">Submit Policies</button>
-  <p id="submitMsg" class="output"></p>
-</section>
-</main>
 <%- include('../partials/footer.ejs') %>
