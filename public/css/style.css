@@ -178,12 +178,12 @@ main {
 }
 
 .hero-content-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  display: flex;
+  justify-content: center;
   align-items: center;
   max-width: 1200px;
   margin: 0 auto;
+  text-align: center;
 }
 
 .hero-text h1 {
@@ -206,6 +206,8 @@ main {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 .primary-btn {
