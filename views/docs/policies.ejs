@@ -1,10 +1,12 @@
-<%- include('../partials/header') %>
+<%- include('../partials/header', { currentPage: 'policies', extraStyles: '/css/style.css' }) %>
 
 <!-- Policies Header Section -->
-<section class="policies-header">
-  <div class="policies-header-content">
-    <h1>Rental Policies</h1>
-    <p>Review our comprehensive rental policies and requirements for VoyagerAI vehicle rentals.</p>
+<section class="hero-section">
+  <div class="hero-content-wrapper">
+    <div class="hero-text">
+      <h1>Rental Policies</h1>
+      <p>Review our comprehensive rental policies and requirements for VoyagerAI vehicle rentals.</p>
+    </div>
   </div>
 </section>
 
@@ -101,13 +103,11 @@
       <div class="policy-section">
         <h2>Need Help?</h2>
         <p>If you have any questions about our policies or need assistance during your rental, our customer support team is here to help.</p>
-        <a href="/docs/support" class="support-btn">Contact Customer Support</a>
+        <a href="/docs/support" class="cta-button">Contact Customer Support</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Include Policies-specific CSS -->
-<link rel="stylesheet" href="/css/policies.css">
-
+        </main>
 <%- include('../partials/footer.ejs') %>
