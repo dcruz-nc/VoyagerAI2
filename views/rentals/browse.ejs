@@ -22,18 +22,22 @@
                 <div class="filter-options">
                     <div class="filter-group">
                         <label>Vehicle Type</label>
-                        <select class="filter-select">
+                        <select class="filter-select" data-filter="type">
                             <option value="">All Types</option>
-                            <option value="sedan">Sedan</option>
-                            <option value="suv">SUV</option>
-                            <option value="luxury">Luxury</option>
-                            <option value="sports">Sports</option>
+                            <option value="Sedan">Sedan</option>
+                            <option value="SUV">SUV</option>
+                            <option value="Luxury">Luxury</option>
+                            <option value="Sport">Sport</option>
+                            <option value="Electric">Electric</option>
+                            <option value="Hybrid">Hybrid</option>
+                            <option value="Truck">Truck</option>
+                            <option value="4x4">4x4</option>
                         </select>
                     </div>
                     
                     <div class="filter-group">
                         <label>Price Range</label>
-                        <select class="filter-select">
+                        <select class="filter-select" data-filter="price">
                             <option value="">Any Price</option>
                             <option value="0-50">$0 - $50/day</option>
                             <option value="51-100">$51 - $100/day</option>
@@ -44,7 +48,7 @@
                     
                     <div class="filter-group">
                         <label>Sort By</label>
-                        <select class="filter-select">
+                        <select class="filter-select" data-filter="sort">
                             <option value="featured">Featured</option>
                             <option value="price-low">Price: Low to High</option>
                             <option value="price-high">Price: High to Low</option>
@@ -168,4 +172,8 @@
         </section>
 
         </main>
+
+        <!-- Include browse page JavaScript -->
+        <script src="/scripts/browse.js"></script>
+
 <%- include('../partials/footer.ejs') %>
