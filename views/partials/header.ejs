@@ -36,17 +36,7 @@
                 <li><a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a></li>
                 <li><a href="/rentals/browse" class="<%= currentPage === 'browse' ? 'active' : '' %>">Browse Cars</a></li>
                 <li><a href="/rentals" class="<%= currentPage === 'rentals' ? 'active' : '' %>">My Rentals</a></li>
-                <% if (
-                    currentPage !== 'login' && 
-                    currentPage !== 'signup' && 
-                    currentPage !== 'profile' && 
-                    currentPage !== 'logout' && 
-                    currentPage !== 'home' && 
-                    currentPage !== 'browse' && 
-                    currentPage !== 'rentals'
-                ) { %>
-                    <li><a href="" class="active"><%= toTitleCase(currentPage) %></a></li>
-                <% } %>
+
                 <%if(!user) {%>
                     <li><a href="/users/login" class="<%= currentPage === 'login' ? 'active' : '' %>">Login</a></li>
                     <li><a href="/users/signup" class="<%= currentPage === 'signup' ? 'active' : '' %>">Signup</a></li>
