@@ -2,13 +2,72 @@
 
         <!-- Hero Section -->
         <section class="hero-section">
+            <div class="hero-background">
+                <div class="hero-pattern"></div>
+                <div class="hero-gradient"></div>
+            </div>
             <div class="hero-content-wrapper">
                 <div class="hero-text">
-                    <h1>Find Your Perfect Ride</h1>
-                    <p>Discover the perfect vehicle for your journey with our AI-powered matching system. From luxury sedans to rugged SUVs, we've got you covered.</p>
+                    <div class="hero-badge">
+                        <i class="fas fa-star"></i>
+                        <span>Trusted by 10,000+ customers</span>
+                    </div>
+                    <h1 class="hero-title">
+                        <span class="title-highlight">Find Your Perfect</span>
+                        <span class="title-main">Ride</span>
+                    </h1>
+                    <p class="hero-description">Discover the perfect vehicle for your journey with our AI-powered matching system. From luxury sedans to rugged SUVs, we've got you covered with premium service and competitive rates.</p>
                     <div class="hero-buttons">
-                        <a href="/rentals/browse" class="primary-btn">Browse All Vehicles</a>
-                        <a href="/docs/mission" class="secondary-btn">Learn More</a>
+                        <a href="/rentals/browse" class="primary-btn hero-btn">
+                            <i class="fas fa-search"></i>
+                            <span>Browse All Vehicles</span>
+                        </a>
+                        <a href="/docs/mission" class="secondary-btn hero-btn">
+                            <i class="fas fa-info-circle"></i>
+                            <span>Learn More</span>
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Vehicles</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Cities</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">4.9★</div>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="hero-image-container">
+                        <div class="hero-car-showcase">
+                            <div class="car-card primary-car">
+                                <i class="fas fa-car-side"></i>
+                                <span>Luxury</span>
+                            </div>
+                            <div class="car-card secondary-car">
+                                <i class="fas fa-truck"></i>
+                                <span>SUV</span>
+                            </div>
+                            <div class="car-card accent-car">
+                                <i class="fas fa-motorcycle"></i>
+                                <span>Sports</span>
+                            </div>
+                        </div>
+                        <div class="floating-elements">
+                            <div class="floating-card">
+                                <i class="fas fa-check-circle"></i>
+                                <span>Instant Booking</span>
+                            </div>
+                            <div class="floating-card">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Fully Insured</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -17,8 +76,14 @@
         <!-- Featured Vehicles Section -->
         <section class="featured-section">
             <div class="section-header">
-                <h2>Featured Vehicles</h2>
-                <p>Handpicked vehicles for the best driving experience</p>
+                <div class="header-content">
+                    <div class="section-badge">
+                        <i class="fas fa-star"></i>
+                        <span>Premium Selection</span>
+                    </div>
+                    <h2 class="section-title">Featured Vehicles</h2>
+                    <p class="section-description">Handpicked vehicles for the best driving experience, carefully selected by our AI system</p>
+                </div>
             </div>
             <div class="vehicles-grid" id="featuredVehiclesGrid">
                 <% featuredVehicles.forEach(vehicle => { %>
@@ -27,10 +92,10 @@
                             <img src="<%= vehicle.imageUrl %>" alt="<%= vehicle.make + ' ' + vehicle.model %>" class="vehicle-image">
                             <div class="vehicle-overlay">
                                 <div class="vehicle-actions">
-                                    <button class="quick-view-btn" onclick="quickView('<%= vehicle._id %>')">
+                                    <button class="quick-view-btn" onclick="quickView('<%= vehicle._id %>')" title="Quick View">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    <button class="favorite-btn" onclick="toggleFavorite('<%= vehicle._id %>')">
+                                    <button class="favorite-btn" onclick="toggleFavorite('<%= vehicle._id %>')" title="Add to Favorites">
                                         <i class="fas fa-heart"></i>
                                     </button>
                                 </div>
@@ -49,8 +114,14 @@
                             <div class="vehicle-header">
                                 <h3 class="vehicle-title"><%= vehicle.make %> <%= vehicle.model %></h3>
                                 <div class="vehicle-rating">
-                                    <i class="fas fa-star"></i>
-                                    <span>4.8</span>
+                                    <div class="stars">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <span class="rating-text">4.8</span>
                                 </div>
                             </div>
                             
@@ -88,11 +159,11 @@
                             <div class="vehicle-actions-bottom">
                                 <button class="reserve-btn" onclick="window.location.href='/rentals/payment?vehicleId=<%= vehicle._id %>'">
                                     <i class="fas fa-calendar-check"></i>
-                                    Reserve Now
+                                    <span>Reserve Now</span>
                                 </button>
                                 <button class="details-btn" onclick="showVehicleDetails('<%= vehicle._id %>')">
                                     <i class="fas fa-info-circle"></i>
-                                    Details
+                                    <span>Details</span>
                                 </button>
                             </div>
                         </div>
@@ -100,56 +171,117 @@
                 <% }) %>
             </div>
             <div class="section-footer">
-                <a href="/rentals/browse" class="view-all-btn">View All Vehicles</a>
+                <a href="/rentals/browse" class="view-all-btn">
+                    <i class="fas fa-arrow-right"></i>
+                    <span>View All Vehicles</span>
+                </a>
             </div>
         </section>
 
         <!-- Benefits Section -->
         <section class="benefits-section">
             <div class="section-header">
-                <h2>Why Choose VoyagerAI?</h2>
-                <p>Experience the future of car rentals with our innovative approach</p>
+                <div class="header-content">
+                    <div class="section-badge">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Why Choose Us</span>
+                    </div>
+                    <h2 class="section-title">Why Choose VoyagerAI?</h2>
+                    <p class="section-description">Experience the future of car rentals with our innovative approach and cutting-edge technology</p>
+                </div>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-brain"></i>
                     </div>
-                    <h3>AI-Powered Matching</h3>
-                    <p>Our advanced algorithms analyze your preferences, budget, and needs to recommend the perfect vehicle for your journey.</p>
+                    <div class="benefit-content">
+                        <h3>AI-Powered Matching</h3>
+                        <p>Our advanced algorithms analyze your preferences, budget, and needs to recommend the perfect vehicle for your journey.</p>
+                        <div class="benefit-features">
+                            <span class="benefit-feature">Smart Recommendations</span>
+                            <span class="benefit-feature">Personalized Results</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-home"></i>
                     </div>
-                    <h3>Home Test Drives</h3>
-                    <p>Schedule a car to come directly to your doorstep. Test drive, rent, or purchase with ultimate convenience.</p>
+                    <div class="benefit-content">
+                        <h3>Home Test Drives</h3>
+                        <p>Schedule a car to come directly to your doorstep. Test drive, rent, or purchase with ultimate convenience.</p>
+                        <div class="benefit-features">
+                            <span class="benefit-feature">Door-to-Door Service</span>
+                            <span class="benefit-feature">Flexible Scheduling</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-shield-alt"></i>
                     </div>
-                    <h3>Secure Transactions</h3>
-                    <p>Every booking is encrypted and protected with industry-grade security. Your safety is our priority.</p>
+                    <div class="benefit-content">
+                        <h3>Secure Transactions</h3>
+                        <p>Every booking is encrypted and protected with industry-grade security. Your safety is our priority.</p>
+                        <div class="benefit-features">
+                            <span class="benefit-feature">Bank-Level Security</span>
+                            <span class="benefit-feature">Privacy Protection</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="benefit-card">
                     <div class="benefit-icon">
                         <i class="fas fa-clock"></i>
                     </div>
-                    <h3>24/7 Support</h3>
-                    <p>Round-the-clock customer support to assist you with any questions or concerns about your rental.</p>
+                    <div class="benefit-content">
+                        <h3>24/7 Support</h3>
+                        <p>Round-the-clock customer support to assist you with any questions or concerns about your rental.</p>
+                        <div class="benefit-features">
+                            <span class="benefit-feature">Live Chat</span>
+                            <span class="benefit-feature">Phone Support</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
         <section class="cta-section">
+            <div class="cta-background">
+                <div class="cta-pattern"></div>
+                <div class="cta-gradient"></div>
+            </div>
             <div class="cta-content">
-                <h2>Ready to Start Your Journey?</h2>
-                <p>Join thousands of satisfied customers who trust VoyagerAI for their transportation needs.</p>
+                <div class="cta-badge">
+                    <i class="fas fa-rocket"></i>
+                    <span>Get Started Today</span>
+                </div>
+                <h2 class="cta-title">Ready to Start Your Journey?</h2>
+                <p class="cta-description">Join thousands of satisfied customers who trust VoyagerAI for their transportation needs. Start exploring our fleet today!</p>
                 <div class="cta-buttons">
-                    <a href="/users/signup" class="primary-btn">Get Started</a>
-                    <a href="/docs/policies" class="secondary-btn">Learn More</a>
+                    <a href="/users/signup" class="primary-btn cta-btn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Get Started</span>
+                    </a>
+                    <a href="/docs/policies" class="secondary-btn cta-btn">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Learn More</span>
+                    </a>
+                </div>
+                <div class="cta-features">
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>No Hidden Fees</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Instant Booking</span>
+                    </div>
+                    <div class="cta-feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Flexible Cancellation</span>
+                    </div>
                 </div>
             </div>
         </section>
