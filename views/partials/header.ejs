@@ -5,7 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Car Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚘</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚘
+
+        
+    </text></svg>">
     <% if (typeof currentPage === 'undefined') { %>
         <title>VoyagerAI – Smart Vehicle Matching</title>
     <% } else { %>
@@ -14,6 +17,9 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap"
         rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <!-- Styles -->
     <% if (typeof defaultStyles !== 'undefined' && defaultStyles) { %>
@@ -31,25 +37,73 @@
 </head>
 
 <body>
-    <header class="hero">
-        <nav class="navbar">
-            <a href="/" class="brand">VoyagerAI</a>
-            <ul class="nav-links">
-                <li><a href="/" class="<%= currentPage === 'home' ? 'active' : '' %>">Home</a></li>
-                <li><a href="/rentals/browse" class="<%= currentPage === 'browse' ? 'active' : '' %>">Browse Cars</a></li>
-                <li><a href="/rentals" class="<%= currentPage === 'rentals' ? 'active' : '' %>">My Rentals</a></li>
-
-                <%if(!user) {%>
-                    <li><a href="/users/login" class="<%= currentPage === 'login' ? 'active' : '' %>">Login</a></li>
-                    <li><a href="/users/signup" class="<%= currentPage === 'signup' ? 'active' : '' %>">Signup</a></li>
-                <%} else {%>
-                    <li><a href="/users/profile" class="<%= currentPage === 'profile' ? 'active' : '' %>">Profile</a></li>
-                    <li><a href="/users/logout" class="<%= currentPage === 'logout' ? 'active' : '' %>">Logout</a></li>
-                <%} %>
-            </ul>
-        </nav>
+    <header class="modern-header">
+        <div class="header-container">
+            <nav class="modern-navbar">
+                <div class="nav-brand">
+                    <a href="/" class="brand-link">
+                        <div class="brand-icon">
+                            <i class="fas fa-car-side"></i>
+                        </div>
+                        <span class="brand-text">VoyagerAI</span>
+                    </a>
+                </div>
+                
+                <div class="nav-menu" id="nav-menu">
+                    <ul class="nav-links">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link <%= currentPage === 'home' ? 'active' : '' %>">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/rentals/browse" class="nav-link <%= currentPage === 'browse' ? 'active' : '' %>">
+                                <i class="fas fa-search"></i>
+                                <span>Browse Cars</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/rentals" class="nav-link <%= currentPage === 'rentals' ? 'active' : '' %>">
+                                <i class="fas fa-key"></i>
+                                <span>My Rentals</span>
+                            </a>
+                        </li>
+                    </ul>
+                    
+                    <div class="nav-auth">
+                        <%if(!user) {%>
+                            <a href="/users/login" class="auth-link login <%= currentPage === 'login' ? 'active' : '' %>">
+                                <i class="fas fa-sign-in-alt"></i>
+                                <span>Login</span>
+                            </a>
+                            <a href="/users/signup" class="auth-link signup <%= currentPage === 'signup' ? 'active' : '' %>">
+                                <i class="fas fa-user-plus"></i>
+                                <span>Sign Up</span>
+                            </a>
+                        <%} else {%>
+                            <a href="/users/profile" class="auth-link profile <%= currentPage === 'profile' ? 'active' : '' %>">
+                                <i class="fas fa-user-circle"></i>
+                                <span>Profile</span>
+                            </a>
+                            <a href="/users/logout" class="auth-link logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </a>
+                        <%} %>
+                    </div>
+                </div>
+                
+                <div class="nav-toggle" id="nav-toggle">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </div>
+            </nav>
+        </div>
     </header>
-<main>
+
+    <main>
       <%if(errorMessages.length >0) {
           errorMessages.forEach(message => { %>
               <div class="error"> <%=message%> </div>
@@ -75,3 +129,35 @@
               <div class="info"> <%=message%> </div>
           <%})
       }%>
+
+    <script>
+        // Mobile Navigation Toggle
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            
+            if (navToggle && navMenu) {
+                navToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    navToggle.classList.toggle('active');
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                const navLinks = navMenu.querySelectorAll('.nav-link, .auth-link');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        navToggle.classList.remove('active');
+                    });
+                });
+            }
+        });
+    </script>
